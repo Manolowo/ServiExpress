@@ -1,0 +1,57 @@
+/* Estilos de la barra de navegación */
+.navbar {
+    font-family: 'Arial', sans-serif;
+    background-color: rgb(10, 10, 85);/* Azul */
+    color: #fff; /* Letras blancas */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    border-radius: 10px;
+}
+
+.logo img {
+    padding-left: 15px;
+    height: 50px; /* Ajusta la altura del logo según tus necesidades */
+}
+
+.logo img:hover {
+    transform: scale(1.1); /* Ajusta el valor según tus preferencias */
+    transition: 0.5s;
+}
+
+.nav-items ul {
+    list-style: none;
+    display: flex;
+}
+
+.nav-items ul li {
+    margin-right: 25px;
+}
+
+.nav-items ul li:hover {
+    transform: scale(1.1); /* Ajusta el valor según tus preferencias */
+    transition: 0.5s;
+}
+
+.nav-items a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.login-button a {
+    background-color: #fff; /* Blanco */
+    color: #000; /* Letras negras */
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: color 0.5s, background-color 0.5s;
+}
+
+.login-button a:hover {
+    color: blue;/* Azul al pasar el ratón */
+    background-color: #fff; /* Blanco al pasar el ratón */
+
+}

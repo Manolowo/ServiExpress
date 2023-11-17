@@ -1,17 +1,75 @@
-
 {% load static %}
 
-<body>
-    <img src="{% static 'LogoPokebola.png' %}" alt="Logo" width="">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ServiExpress</title>
+    <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
 
-    <h1>Hello World</h1>
-<p>
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod dolorum expedita
-  alias mollitia sunt dolor, obcaecati architecto quibusdam at sequi saepe
-  adipisci, ipsa inventore officia repellendus vitae nostrum rem libero corporis
-  impedit, ipsam maiores temporibus? Ad, molestiae. Fuga, itaque odit! Aliquid
-  laborum obcaecati blanditiis distinctio ducimus corrupti ex aperiam quod?
-</p>
+    <script src="{% static 'js/carousel.js' %}"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="navbar">
+        <div class="logo">
+          <a href="/"
+            ><img src="{% static 'LogoPokebola.png' %}" alt="Logo"
+          /></a>
+        </div>
+
+        <div class="nav-items">
+          <ul>
+            <li><a href="#">Acerca de</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li class="login-button">
+              <a href="#">Iniciar sesión</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="content">
+      <h1>Bienvenido a mi página web</h1>
+      <!-- Contenido adicional de tu página de inicio -->
+
+      <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-item" style="background-color: #3498db;">
+                <!-- Primer Slide: Imagen -->
+                <img src="{% static 'carouselImg/' %}" alt="Imagen 1">
+            </div>
+            <div class="carousel-item" style="background-color: #2ecc71;">
+                <!-- Segundo Slide: Texto -->
+                <div class="carousel-text">
+                    <h2>Texto del segundo slide</h2>
+                    <p>Descripción del segundo slide.</p>
+                </div>
+            </div>
+            <div class="carousel-item" style="background-color: #e74c3c;">
+                <!-- Tercer Slide: Imagen -->
+                <img src="{% static 'carouselImg/' %}" alt="Imagen 2">
+            </div>
+            <div class="carousel-item" style="background-color: #f39c12;">
+                <!-- Cuarto Slide: Imagen -->
+                <img src="{% static 'carouselImg/' %}" alt="Imagen 3">
+            </div>
+        </div>
     
-</body>
+        <button class="carousel-button carousel-button-prev" onclick="prevSlide()">❮</button>
+        <button class="carousel-button carousel-button-next" onclick="nextSlide()">❯</button>
+    
+        <div class="carousel-indicators">
+            <div class="indicator" onclick="goToSlide(0)"></div>
+            <div class="indicator" onclick="goToSlide(1)"></div>
+            <div class="indicator" onclick="goToSlide(2)"></div>
+            <div class="indicator" onclick="goToSlide(3)"></div>
+        </div>
+    </div>
+
+    </div>
+  </body>
 </html>
