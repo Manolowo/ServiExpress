@@ -1,19 +1,21 @@
-/* Estilos de la barra de navegación */
 .navbar {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(18, 18, 122);
     font-family: 'Arial', sans-serif;
-    background-color: rgb(10, 10, 85);/* Azul */
-    color: #fff; /* Letras blancas */
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0;
-    border-radius: 10px;
+    z-index: 1000;
+    color: #fff;
 }
 
 .logo img {
     padding-left: 15px;
-    height: 50px; /* Ajusta la altura del logo según tus necesidades */
+    width: 60px; /* Ajusta la altura del logo según tus necesidades */
 }
 
 .logo img:hover {

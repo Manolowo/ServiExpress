@@ -1,75 +1,164 @@
+<!-- index.html -->
+
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ServiExpress</title>
-    <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiExpress</title>
+  <!-- .css -->
+  <link rel="stylesheet" href="{% static 'styles/nav.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/formulario.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/initsesion.css' %}">
 
-    <script src="{% static 'js/carousel.js' %}"></script>
-  </head>
-  <body>
+
+</head>
+
+<body>
+  
+  <header>
     <nav>
       <div class="navbar">
         <div class="logo">
-          <a href="/"
-            ><img src="{% static 'LogoPokebola.png' %}" alt="Logo"
-          /></a>
+          <a href="/">
+            <img src="{% static 'LogoPokebola.png' %}" alt="Logo">
+          </a>
         </div>
 
         <div class="nav-items">
           <ul>
-            <li><a href="#">Acerca de</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li><a href="#carousel-container">Nosotros</a></li>
+            <li><a href="#contact-form-container">Contacto</a></li>
             <li class="login-button">
-              <a href="#">Iniciar sesión</a>
+              <a href="#" id="loginModal">Iniciar sesión</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+  </header>
 
-    <div class="content">
-      <h1>Bienvenido a mi página web</h1>
-      <!-- Contenido adicional de tu página de inicio -->
+  <div class="content" style="margin-top: 100px;">
 
-      <div class="carousel-container">
-        <div class="carousel">
-            <div class="carousel-item" style="background-color: #3498db;">
-                <!-- Primer Slide: Imagen -->
-                <img src="{% static 'carouselImg/' %}" alt="Imagen 1">
-            </div>
-            <div class="carousel-item" style="background-color: #2ecc71;">
-                <!-- Segundo Slide: Texto -->
-                <div class="carousel-text">
-                    <h2>Texto del segundo slide</h2>
-                    <p>Descripción del segundo slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item" style="background-color: #e74c3c;">
-                <!-- Tercer Slide: Imagen -->
-                <img src="{% static 'carouselImg/' %}" alt="Imagen 2">
-            </div>
-            <div class="carousel-item" style="background-color: #f39c12;">
-                <!-- Cuarto Slide: Imagen -->
-                <img src="{% static 'carouselImg/' %}" alt="Imagen 3">
-            </div>
+    <!-- Contenido adicional de tu página de inicio -->
+
+    <div class="carousel-container" id="carousel-container">
+      <div class="carousel">
+        <div class="carousel-item" style="background-color: #3498db;">
+          <!-- Primer Slide: Imagen -->
+          <img src="{% static 'slides/1.png' %}" alt="Imagen 1">
         </div>
-    
-        <button class="carousel-button carousel-button-prev" onclick="prevSlide()">❮</button>
-        <button class="carousel-button carousel-button-next" onclick="nextSlide()">❯</button>
-    
-        <div class="carousel-indicators">
-            <div class="indicator" onclick="goToSlide(0)"></div>
-            <div class="indicator" onclick="goToSlide(1)"></div>
-            <div class="indicator" onclick="goToSlide(2)"></div>
-            <div class="indicator" onclick="goToSlide(3)"></div>
+        <div class="carousel-item" style="background-color: #e74c3c;">
+          <!-- Tercer Slide: Imagen -->
+          <img src="{% static 'slides/2.png' %}" alt="Imagen 2">
         </div>
+        <div class="carousel-item" style="background-color: #f39c12;">
+          <!-- Cuarto Slide: Imagen -->
+          <img src="{% static 'slides/3.png' %}" alt="Imagen 3">
+        </div>
+      </div>
+
+      <button class="carousel-button carousel-button-prev" onclick="prevSlide()">❮</button>
+      <button class="carousel-button carousel-button-next" onclick="nextSlide()">❯</button>
+
+      <div class="carousel-indicators">
+        <div class="indicator" onclick="goToSlide(0)"></div>
+        <div class="indicator" onclick="goToSlide(1)"></div>
+        <div class="indicator" onclick="goToSlide(2)"></div>
+      </div>
     </div>
 
+    <div class="contact-form-container" id="contact-form-container">
+      <h2>Contacto</h2>
+      <form id="contact-form" action="#" method="post">
+        {% csrf_token %}  <!-- Agrega esta línea para incluir el token CSRF -->
+    
+        <label for="name">Nombre:</label>
+        <input type="text" id="fname" name="fname" required>
+    
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="femail" name="femail" required>
+    
+        <label for="message">Mensaje:</label>
+        <textarea id="message" name="message" required></textarea>
+    
+        <button type="submit">Enviar</button>
+      </form>
     </div>
-  </body>
+
+    <!-- Modal inicio sesion -->
+
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Iniciar Sesión</h2>
+
+        <form id="loginForm" method="post" action="{% url 'login_view' %}">
+          {% csrf_token %}
+          <label for="email">Correo electrónico:</label>
+          <input type="email" id="email" name="email" required>
+    
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password" name="password" required>
+    
+          <button type="submit" id="loginButton" class="modal-button">Iniciar Sesión</button>
+          <br>
+          <button type="button" id="createAccountButton" class="modal-button">Crear Cuenta</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <!-- scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{% static 'js/carousel.js' %}"></script>
+  <script src="{% static 'js/contacto.js' %}"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const $loginModalButton = $('#loginModal');
+      const $closeModalButton = $('#closeModal');
+      const $modal = $('.modal');
+      const $loginButton = $('#loginButton');
+      const $createAccountButton = $('#createAccountButton');
+
+      // Abre el modal al hacer clic en el botón de iniciar sesión desde la barra de navegación
+      $loginModalButton.on('click', function () {
+        $modal.show();
+      });
+
+      // Cierra el modal al hacer clic en el botón de cerrar
+      $closeModalButton.on('click', function () {
+        $modal.hide();
+      });
+
+      // Cierra el modal si se hace clic fuera del área del modal
+      $(window).on('click', function (event) {
+        if (event.target === $modal[0]) {
+          $modal.hide();
+        }
+      });
+
+      // Asigna las funciones a los botones
+      $loginButton.on('click', function () {
+        // Agrega aquí la lógica de inicio de sesión
+        console.log('Iniciar Sesión');
+        $modal.hide();
+      });
+
+      $createAccountButton.on('click', function () {
+        // Agrega aquí la lógica de creación de cuenta
+        console.log('Crear Cuenta');
+        $modal.hide();
+      });
+    });
+  </script>
+</body>
 </html>

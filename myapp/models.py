@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     user_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=15, null=False)
     user_lastname = models.CharField(max_length=20, null=False)
+    user_password = models.CharField(max_length=20, null=False, default="admin")
     user_mail = models.EmailField(null=False)
     user_fono = models.IntegerField(null=False)
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)

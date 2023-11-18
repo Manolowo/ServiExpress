@@ -1,63 +1,85 @@
 /* carousel.css */
-body {
-    font-family: 'Arial', sans-serif;
-}
-
 .carousel-container {
-    position: relative;
-    max-width: 600px;
-    margin: auto;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
 .carousel {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item {
-    min-width: 100%;
-    box-sizing: border-box;
+  min-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.carousel img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 100%;
 }
 
 .carousel-button {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
+    top: 40%; /* Ajusta según sea necesario */
+    font-size: 24px;
+    background: none;
     border: none;
     cursor: pointer;
-    font-size: 20px;
-    color: #333;
-}
+  }
 
-.carousel-button-prev {
-    left: 10px;
-}
-
-.carousel-button-next {
-    right: 10px;
-}
-
-.carousel-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+  .carousel-button-prev {
+    left: 10px; /* Ajusta según sea necesario */
+    color: blue;
+  }
+  
+  .carousel-button-next {
+    right: 10px; /* Ajusta según sea necesario */
+    color: blue;
+  }
+  
+  .carousel-indicators {
     display: flex;
-    gap: 10px;
-}
-
-.indicator {
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .indicator {
     width: 10px;
     height: 10px;
+    background-color: #888;
     border-radius: 50%;
-    background-color: #fff;
+    margin: 0 5px;
     cursor: pointer;
+  }
+  
+  /* Agrega estilos para el indicador activo (cambia el color a azul) */
+  .indicator.active {
+    background-color: blue;
+  }
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
 }
 
-.indicator.active {
-    background-color: #333;
+.carousel-caption h5 {
+  font-size: 36px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 15px;
+}
+
+.carousel-caption p {
+  width: 60%;
+  margin: 10px auto;
+  font-size: 18px;
 }
