@@ -1,0 +1,237 @@
+<!-- adm_users.html -->
+<h2>Administración de Usuarios</h2>
+
+<button id="add-user-btn" class="add-user-button">+ Añadir Usuario</button>
+
+<div
+  id="add-user-form-container"
+  class="user-form-container"
+  style="display: none"
+>
+  <form id="add-user-form" class="user-form">
+    {% csrf_token %}
+    <label for="user_name">Nombre:</label>
+    <input type="text" name="user_name" required />
+
+    <label for="user_lastname">Apellido:</label>
+    <input type="text" name="user_lastname" required />
+
+    <label for="user_password">Contraseña:</label>
+    <input type="password" name="user_password" required />
+
+    <label for="user_mail">Correo Electrónico:</label>
+    <input type="email" name="user_mail" required />
+
+    <label for="user_fono">Teléfono:</label>
+    <input type="text" name="user_fono" required />
+
+    <label for="rol_id">Rol:</label>
+    <select name="rol_id" required>
+      <option value="cli">Cliente</option>
+      <option value="per">Personal</option>
+      <option value="adm">Administrador</option>
+    </select>
+
+    <button type="submit">Guardar</button>
+  </form>
+</div>
+
+<table class="user-table">
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Rol</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Correo Electrónico</th>
+      <th>Teléfono</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.rol.rol_id }}_{{ user.user_id }}</td>
+      <td>{{ user.rol.rol_description }}</td>
+      <td>{{ user.user_name }}</td>
+      <td>{{ user.user_lastname }}</td>
+      <td>{{ user.user_mail }}</td>
+      <td>{{ user.user_fono }}</td>
+      <td>
+        <button class="delete-user-btn" data-user-id="{{ user.user_id }}">
+          Eliminar
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+
+    <!-- Contenedor del formulario de edición -->
+    <div id="edit-user-form-container" style="display: none">
+      <h2>Editar Usuario</h2>
+      <form id="edit-user-form" class="user-form">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="edit_user_id"
+          value="{{ user_data.user_id }}"
+        />
+
+        <label for="edit_user_name">Nombre:</label>
+        <input
+          type="text"
+          name="edit_user_name"
+          value="{{ user_data.user_name }}"
+          required
+        />
+
+        <label for="edit_user_lastname">Apellido:</label>
+        <input
+          type="text"
+          name="edit_user_lastname"
+          value="{{ user_data.user_lastname }}"
+          required
+        />
+
+        <label for="edit_user_password">Contraseña:</label>
+        <input
+          type="password"
+          name="edit_user_password"
+          value="{{ user_data.user_password }}"
+          required
+        />
+
+        <label for="edit_user_mail">Correo Electrónico:</label>
+        <input
+          type="email"
+          name="edit_user_mail"
+          value="{{ user_data.user_mail }}"
+          required
+        />
+
+        <label for="edit_user_fono">Teléfono:</label>
+        <input
+          type="text"
+          name="edit_user_fono"
+          value="{{ user_data.user_fono }}"
+          required
+        />
+
+        <label for="edit_rol_id">Rol:</label>
+        <select name="edit_rol_id" required>
+          <option value="cli">Cliente</option>
+          <option value="per">Personal</option>
+          <option value="adm">Administrador</option>
+        </select>
+
+        <input type="hidden" name="edit_user_id" value="" />
+
+        <button type="submit">Guardar Cambios</button>
+      </form>
+    </div>
+
+    <!-- añadir usuario -->
+
+    <script>
+      $(document).ready(function () {
+        // Manejar el clic en el botón "Añadir Usuario"
+        $("#add-user-btn").on("click", function () {
+          $("#add-user-form-container").toggle();
+        });
+
+        // Manejar el envío del formulario para añadir usuario
+        $("#add-user-form").on("submit", function (e) {
+          e.preventDefault();
+
+          // Realizar una solicitud AJAX para agregar el usuario a la base de datos
+          $.ajax({
+            url: "{% url 'add_user' %}", // Ajusta esto según tu configuración de URL
+            method: "POST",
+            data: $(this).serialize(),
+            success: function (data) {
+              // Actualizar la tabla con los nuevos datos
+              // Puedes hacer esto también con una nueva solicitud AJAX o como mejor prefieras
+
+              // Limpiar el formulario y ocultarlo después de añadir el usuario
+              $("#add-user-form")[0].reset();
+              $("#add-user-form-container").hide();
+
+              // Agregar el nuevo usuario a la tabla
+              var newRow =
+                "<tr>" +
+                "<td>" +
+                data.rol_id +
+                "_" +
+                data.user_id +
+                "</td>" +
+                "<td>" +
+                data.rol_description +
+                "</td>" +
+                "<td>" +
+                data.user_name +
+                "</td>" +
+                "<td>" +
+                data.user_lastname +
+                "</td>" +
+                "<td>" +
+                data.user_mail +
+                "</td>" +
+                "<td>" +
+                data.user_fono +
+                "</td>" +
+                "</tr>";
+
+              $("tbody").append(newRow);
+
+              // Mostrar el mensaje de éxito con SweetAlert2
+              Swal.fire({
+                icon: "success",
+                title: "Usuario añadido",
+                showConfirmButton: false,
+                timer: 1500, // 1.5 segundos
+              });
+            },
+            error: function () {
+              alert("Error al añadir usuario");
+            },
+          });
+        });
+      });
+    </script>
+
+    <!-- eliminar usuario  -->
+
+    <script>
+      $(document).ready(function () {
+        $(".delete-user-btn").on("click", function () {
+          var userId = $(this).data("user-id");
+          var clickedButton = $(this); // Guardamos una referencia al botón clicado
+
+          // Realizar una solicitud AJAX para eliminar el usuario de la base de datos
+          $.ajax({
+            url: "{% url 'delete_user' %}",
+            method: "POST",
+            data: { user_id: userId },
+            success: function (data) {
+              // Mostrar la alerta con SweetAlert2
+              Swal.fire({
+                icon: "success",
+                title: "Usuario Eliminado",
+              });
+
+              // Eliminar la fila de la tabla
+              clickedButton.closest("tr").remove();
+            },
+            error: function () {
+              // Mostrar una alerta de error si la eliminación falla
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error al eliminar usuario",
+              });
+            },
+          });
+        });
+      });
+    </script>
+
+  </tbody>
+</table>

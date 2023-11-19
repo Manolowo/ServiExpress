@@ -1,0 +1,75 @@
+
+.add-user-button {
+   background-color: #4caf50; 
+   color: white;
+   padding: 10px 15px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 16px;
+}
+
+
+.user-form-container {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+ }
+
+ .delete-user-btn {
+   background-color: red; /* Fondo rojo */
+   color: white; /* Texto blanco */
+   border: none; /* Sin borde */
+   padding: 5px 10px; /* Ajusta el padding según tus preferencias */
+   border-radius: 5px; /* Esquinas redondeadas */
+   cursor: pointer; /* Cambia el cursor al pasar el ratón */
+ }
+ 
+ /* Cambia el cursor al pasar el ratón */
+ .delete-user-btn:hover {
+   background-color: darkred; /* Cambia el color de fondo al pasar el ratón */
+ }
+ 
+ .user-form label {
+    display: block;
+    margin-bottom: 8px;
+ }
+ 
+ .user-form input,
+ .user-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+ }
+ 
+ .user-form button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+ }
+ 
+ .user-table {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+ }
+ 
+ .user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+ }
+ 
+ .user-table th {
+    background-color: #4caf50;
+    color: white;
+ }
+ 

@@ -1,1 +1,82 @@
-<a>Admin</a>
+<!-- index.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiExpress</title>
+    <!-- .css -->
+  <link rel="stylesheet" href="{% static 'styles/nav.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/usersTable.css' %}">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+  
+  <header>
+    <nav>
+      <div class="navbar">
+        <div class="logo">
+          <a href="/">
+            <img src="{% static 'LogoPokebola.png' %}" alt="Logo">
+          </a>
+        </div>
+
+        <div class="nav-items">
+          <ul>
+            <li><a href="#">Atenciones</a></li>
+            <li><a href="#">Proveedores</a></li>
+            <li><a href="#">Pedidos</a></li>
+            <li><a href="#">Inventario</a></li>
+            <li><a href="#" id="usuarios-link">Usuarios</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="content" style="margin-top: 100px;">
+    <!-- Contenido adicional de tu página de inicio -->
+
+    <div id="container-adm_users">
+      <!-- Aquí se cargará el contenido dinámico -->
+
+    </div>
+
+  </div>
+
+
+  <!-- scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Usuarios
+      $("#usuarios-link").on("click", function (e) {
+        e.preventDefault();
+
+        // Realizar una solicitud AJAX para obtener el contenido de adm_users.html
+        $.ajax({
+          url: "{% url 'adm_users' %}",  // Ajusta esto según tu configuración de URL
+          method: "GET",
+          success: function (data) {
+            // Colocar el contenido en el contenedor dinámico
+            $("#container-adm_users").html(data);
+          },
+          error: function () {
+            alert("Error al cargar el contenido");
+          },
+        });
+      });
+    });
+  </script>
+
+
+</body>
+</html>
