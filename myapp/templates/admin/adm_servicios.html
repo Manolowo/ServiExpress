@@ -1,0 +1,85 @@
+<h2>Administración de Servicios</h2>
+
+<button type="submit" id="add-service-btn" class="modal-button add-service-button">Añadir un nuevo Servicio</button>
+
+<div id="add-service-form-container" style="display: none;">
+  <form id="add-service-form" method="post" action="{% url 'add_service' %}">
+    {% csrf_token %}
+    <label for="ser_desc">Descripción:</label>
+    <input type="text" id="ser_desc" name="ser_desc" required />
+
+    <label for="ser_prec">Precio:</label>
+    <input type="number" id="ser_prec" name="ser_prec" required />
+
+    <label for="ser_durac">Duración:</label>
+    <input type="text" id="ser_durac" name="ser_durac" required />
+
+    <button type="submit" id="add-service-submit" class="modal-button">Añadir Servicio</button>
+  </form>
+</div>
+
+<!-- Contenedor para mostrar los servicios como cards -->
+<div class="card-container" id="service-section" style="display: flex; flex-wrap: wrap;">
+    {% for servicio in servicios %}
+      <div class="service-card" style="flex: 0 0 30%; margin: 10px;">
+        <div class="card-header">
+          <h5>{{ servicio.ser_desc }} </h5>
+        </div>
+        <div class="card-body">
+          <p>Precio: ${{ servicio.ser_prec }}</p>
+          <p>Duración: {{ servicio.ser_durac }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el botón "Añadir Servicio"
+    $("#add-service-btn").on("click", function () {
+      $("#add-service-form-container").toggle();
+    });
+
+    // Manejar el envío del formulario para añadir servicio
+    $("#add-service-form").on("submit", function (e) {
+      e.preventDefault();
+
+      // Realizar una solicitud AJAX para agregar el servicio a la base de datos
+      $.ajax({
+        url: "{% url 'add_service' %}", // Ajusta esto según tu configuración de URL
+        method: "POST",
+        data: $(this).serialize(),
+        success: function (data) {
+          // Actualizar la sección con los nuevos datos
+          // Puedes hacer esto también con una nueva solicitud AJAX o como mejor prefieras
+
+          // Limpiar el formulario y ocultarlo después de añadir el servicio
+          $("#add-service-form")[0].reset();
+          $("#add-service-form-container").hide();
+
+          // Agregar el nuevo servicio a la sección
+          var newCard =
+            '<div class="service-card">' +
+            '<h5>' + data.ser_desc + '</h5>' +
+            '<p>Precio: ' + data.ser_prec + '</p>' +
+            '<p>Duración: ' + data.ser_durac + '</p>' +
+            '</div>';
+
+          $("#service-section").append(newCard);
+
+          // Mostrar el mensaje de éxito con SweetAlert2
+          Swal.fire({
+            icon: "success",
+            title: "Servicio añadido",
+            showConfirmButton: false,
+            timer: 1500, // 1.5 segundos
+          });
+        },
+        error: function () {
+          alert("Error al añadir servicio");
+        },
+      });
+    });
+  });
+</script>

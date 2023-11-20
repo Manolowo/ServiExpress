@@ -1,11 +1,18 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
+
 from .models import UserProfile
+from .models import Servicio
+from .models import Proveedor
+from .models import Vehiculo
+
+from myapp.carrito import Carrito
+
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 
@@ -39,15 +46,60 @@ def login_view(request):
                 return redirect('adm_home')
             else:
                 # Manejar el caso en que el rol no sea reconocido
-                return render(request, 'login.html')
+                return render(request, 'index.html')
         else:
             # Manejar el caso de usuario o contraseña incorrectos
-            return render(request, 'login.html')
+            return render(request, 'index.html')
 
-    return render(request, 'login.html')
+    return render(request, 'index.html')
+
+def crear_cuenta(request):
+    if request.method == 'POST':
+        user_name = request.POST.get('user_name')
+        user_lastname = request.POST.get('user_lastname')
+        user_password = request.POST.get('user_password')
+        user_mail = request.POST.get('user_mail')
+        user_fono = request.POST.get('user_fono')
+
+        # Crear el objeto UserProfile y asignar el rol
+        user_profile = UserProfile(
+            user_name=user_name,
+            user_lastname=user_lastname,
+            user_password=user_password,
+            user_mail=user_mail,
+            user_fono=user_fono,
+            rol_id='cli'  # Asignar el rol 'cli' por defecto
+        )
+        user_profile.save()
+
+        # Aquí puedes agregar lógica adicional, como iniciar sesión automáticamente
+
+        return redirect('cli_home')  # Cambia 'index' por la URL a la que quieras redirigir después de crear la cuenta
+
+    return render(request, 'crear_cuenta.html')
     
 def cli_home(request):
     return render(request, 'cliente/cli_home.html')
+
+
+def cli_servicios(request):
+    servicios = Servicio.objects.all()
+    return render(request, 'cliente/cli_servicios.html', {'servicios': servicios})
+
+@login_required
+def cli_vehiculo(request):
+    try:
+        user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
+        print("User ID from session:", request.session.get('user_id'))
+        print("User Profile for current user:", user_profile)
+    except UserProfile.DoesNotExist:
+        # Manejar el caso en que el UserProfile no exista
+        return redirect('cli_home')
+
+    # Filtrar los vehículos por el UserProfile del usuario actual
+    vehiculo = Vehiculo.objects.filter(userProfile=user_profile)
+
+    return render(request, 'cliente/cli_vehiculo.html', {'vehiculo': vehiculo})
 
 def emp_home(request):
     return render(request, 'personal/per_home.html')
@@ -59,7 +111,41 @@ def adm_users(request):
     users = UserProfile.objects.all()
     return render(request, 'admin/adm_users.html', {'users': users})
 
-@csrf_exempt  # Esto es para desactivar la protección CSRF temporalmente, ya que es solo un ejemplo.
+def adm_servicios(request):
+    servicios = Servicio.objects.all()
+    return render(request, 'admin/adm_servicios.html', {'servicios': servicios})
+
+@csrf_exempt
+def add_service(request):
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        ser_desc = request.POST.get('ser_desc')
+        ser_prec = request.POST.get('ser_prec')
+        ser_durac = request.POST.get('ser_durac')
+
+        # Crear y guardar el nuevo servicio
+        servicio = Servicio(
+            ser_desc=ser_desc,
+            ser_prec=ser_prec,
+            ser_durac=ser_durac
+        )
+        servicio.save()
+
+        servicio_data = {
+            'ser_id': servicio.ser_id,
+            'ser_desc': servicio.ser_desc,
+            'ser_prec': servicio.ser_prec,
+            'ser_durac': servicio.ser_durac,
+        }
+        return JsonResponse(servicio_data)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    
+def adm_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render(request, 'admin/adm_proveedores.html', {'proveedores': proveedores})
+
+@csrf_exempt  # Esto es para desactivar la protección CSRF temporalmente
 def add_user(request):
     if request.method == 'POST':
         # Obtener datos del formulario
@@ -106,3 +192,30 @@ def delete_user(request):
             return JsonResponse({'success': False, 'message': 'El usuario no existe'})
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido'})
+
+"""_____________________ Carrito _____________________"""
+
+def agregarServicio(request, ser_id):
+    carrito= Carrito(request)
+    servicio= Servicio.objects.get(ser_id=ser_id)
+    carrito.agregar(servicio)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def eliminarServicio(request, ser_id):
+    carrito= Carrito(request)
+    servicio= Servicio.objects.get(ser_id=ser_id)
+    carrito.eliminar(servicio)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def restarServicio(request, ser_id):
+    carrito= Carrito(request)
+    servicio= Servicio.objects.get(ser_id=ser_id)
+    carrito.restar(servicio)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def limpiarCarrito(request):
+    carrito= Carrito(request)
+    carrito.limpiar()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+"""_____________________ Carrito _____________________"""

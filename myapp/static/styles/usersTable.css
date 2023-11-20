@@ -1,6 +1,6 @@
 
 .add-user-button {
-   background-color: #4caf50; 
+   background-color: #4caf50;
    color: white;
    padding: 10px 15px;
    border: none;
@@ -47,7 +47,7 @@
  }
  
  .user-form button {
-    background-color: #4caf50;
+    background-color: rgb(18, 18, 122);
     color: white;
     padding: 10px 15px;
     border: none;
@@ -69,7 +69,7 @@
  }
  
  .user-table th {
-    background-color: #4caf50;
+    background-color: rgb(18, 18, 122);
     color: white;
  }
  

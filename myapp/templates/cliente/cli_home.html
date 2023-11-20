@@ -1,1 +1,216 @@
-<a>Cli</a>
+<!-- index.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ServiExpress</title>
+    <!-- .css -->
+    <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/cli_home.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/vehiculo.css' %}" />
+
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <div class="navbar">
+          <div class="logo">
+            <a href="/">
+              <img src="{% static 'LogoPokebola.png' %}" alt="Logo" />
+            </a>
+          </div>
+
+          <div class="nav-items">
+            <ul>
+              <li><a href="#" >Atenciones</a></li>
+              <li><a href="#" id="servicios-link">Servicios</a></li>
+              <li><a href="#" id="vehiculo-link">Mi Vehiculo</a></li>
+              <li><a href="#" id="carrito-link">Carrito</a></li>
+              <li><a href="/">Cerrar sesion</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="content" style="margin-top: 100px">
+      <!-- Contenido adicional de tu página de inicio -->
+
+      <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
+
+      <div id="container-cli_servicios" class="dynamic-content-container">
+        <!-- Aquí se cargará el contenido dinámico -->
+      </div>
+
+      <div id="container-cli_vehiculo" class="dynamic-content-container">
+        <!-- Aquí se cargará el contenido dinámico -->
+      </div>
+
+
+       <!-- Modal Carrito -->
+       <div class="container-xl" id="modal-container">
+        <div class="modal" tabindex="-1" role="dialog" id="modal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  X
+                </button>
+              </div>
+              <!-- Productos dentro del modal -->
+              <div class="modal-body">
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="row" colspan="3" class="text-center">CARRITO</th>
+                    </tr>
+                    <tr>
+                      <th scope="col">Servicio</th>
+                      <th scope="col">Precios</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% if request.session.carrito.items %}
+                  {% for key, value in request.session.carrito.items %}
+                    <tr>
+                      <td>{{value.nombre}}</td>
+                      <td>{{value.acumulado}}</td>
+                    </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                      <td colspan="3">
+                          <div class="alert alert-danger text-center"> Sin Servicios </div>
+                      </td>
+                  </tr>
+                  {% endif %}
+                    <tr>
+                      <th scope="row">Total:</th>
+                      <td colspan="2">$ {{totalCarrito}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="modal-footer">
+                  <div class="col-6">
+                    <a href="{% url 'CLS' %}" class="btn btn-danger"> Limpiar</a>
+                    {% if request.session.carrito.items %}
+                    <a href="formularioCompra" class="btn btn-success">Ir a comprar</a>
+                  </div>
+                  {% else %}
+                  {% endif %}
+                </div>
+
+              </div>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Fin de Carrito-->
+
+    </div>
+
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <!-- servicios -->
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Servicios
+      $("#servicios-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_servicios.html
+        $.ajax({
+          url: "{% url 'cli_servicios' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-cli_servicios").html(data).show();
+
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Servicios");
+          },
+        });
+      });
+  
+    });
+</script>
+
+<!-- vehiculo -->
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el enlace de vehiculo
+    $("#vehiculo-link").on("click", function (e) {
+      e.preventDefault();
+
+      // Realizar una solicitud AJAX para obtener el contenido de adm_vehiculo.html
+      $.ajax({
+        url: "{% url 'cli_vehiculo' %}",
+        method: "GET",
+        success: function (data) {
+          $(".adm-container").hide();
+          $("#container-cli_vehiculo").html(data).show();
+
+        },
+        error: function () {
+          alert("Error al cargar el contenido de Vehiculos");
+        },
+      });
+    });
+
+  });
+</script>
+
+<!-- Carrito -->
+
+<script>
+  $(document).ready(function () {
+    // ...
+
+    // Ocultar el modal al inicio
+    $("#modal-container").hide();
+
+    // Manejar el clic en el enlace de Carrito
+    $("#carrito-link").on("click", function (e) {
+      e.preventDefault();
+
+      // Mostrar el modal del carrito
+      $("#modal-container").show();
+    });
+
+    // Manejar el clic en el botón de cerrar del modal
+    $(".close").on("click", function () {
+      // Ocultar el modal cuando se cierra
+      $("#modal-container").hide();
+    });
+
+    // Ocultar el modal al hacer clic fuera de él
+    $(document).on('click', function (e) {
+      if (!$(e.target).closest('#modal-container, #carrito-link').length) {
+        // Si el clic no fue en el modal ni en el enlace de Carrito, ocultar el modal
+        $("#modal-container").hide();
+      }
+    });
+  });
+</script>
+
+
+  </body>
+</html>

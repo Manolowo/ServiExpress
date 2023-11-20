@@ -4,161 +4,222 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ServiExpress</title>
-  <!-- .css -->
-  <link rel="stylesheet" href="{% static 'styles/nav.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/carousel.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/formulario.css' %}">
-  <link rel="stylesheet" href="{% static 'styles/initsesion.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ServiExpress</title>
+    <!-- .css -->
+    <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/formulario.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/initsesion.css' %}" />
+  </head>
 
+  <body>
+    <header>
+      <nav>
+        <div class="navbar">
+          <div class="logo">
+            <a href="/">
+              <img src="{% static 'LogoPokebola.png' %}" alt="Logo" />
+            </a>
+          </div>
 
-</head>
+          <div class="nav-items">
+            <ul>
+              <li><a href="#carousel-container">Nosotros</a></li>
+              <li><a href="#contact-form-container">Contacto</a></li>
+              <li class="login-button">
+                <a href="#" id="loginModal">Iniciar sesión</a>
+              </li>
+              <li>
+                <a href="#" id="createAccountLink">Crear cuenta</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-<body>
-  
-  <header>
-    <nav>
-      <div class="navbar">
-        <div class="logo">
-          <a href="/">
-            <img src="{% static 'LogoPokebola.png' %}" alt="Logo">
-          </a>
+    <div class="content" style="margin-top: 100px">
+      <!-- Contenido adicional de tu página de inicio -->
+
+      <div class="carousel-container" id="carousel-container">
+        <div class="carousel">
+          <div class="carousel-item" style="background-color: #3498db">
+            <!-- Primer Slide: Imagen -->
+            <img src="{% static 'slides/1.png' %}" alt="Imagen 1" />
+          </div>
+          <div class="carousel-item" style="background-color: #e74c3c">
+            <!-- Tercer Slide: Imagen -->
+            <img src="{% static 'slides/2.png' %}" alt="Imagen 2" />
+          </div>
+          <div class="carousel-item" style="background-color: #f39c12">
+            <!-- Cuarto Slide: Imagen -->
+            <img src="{% static 'slides/3.png' %}" alt="Imagen 3" />
+          </div>
         </div>
 
-        <div class="nav-items">
-          <ul>
-            <li><a href="#carousel-container">Nosotros</a></li>
-            <li><a href="#contact-form-container">Contacto</a></li>
-            <li class="login-button">
-              <a href="#" id="loginModal">Iniciar sesión</a>
-            </li>
-          </ul>
+        <button
+          class="carousel-button carousel-button-prev"
+          onclick="prevSlide()"
+        >
+          ❮
+        </button>
+        <button
+          class="carousel-button carousel-button-next"
+          onclick="nextSlide()"
+        >
+          ❯
+        </button>
+
+        <div class="carousel-indicators">
+          <div class="indicator" onclick="goToSlide(0)"></div>
+          <div class="indicator" onclick="goToSlide(1)"></div>
+          <div class="indicator" onclick="goToSlide(2)"></div>
         </div>
       </div>
-    </nav>
-  </header>
 
-  <div class="content" style="margin-top: 100px;">
-
-    <!-- Contenido adicional de tu página de inicio -->
-
-    <div class="carousel-container" id="carousel-container">
-      <div class="carousel">
-        <div class="carousel-item" style="background-color: #3498db;">
-          <!-- Primer Slide: Imagen -->
-          <img src="{% static 'slides/1.png' %}" alt="Imagen 1">
-        </div>
-        <div class="carousel-item" style="background-color: #e74c3c;">
-          <!-- Tercer Slide: Imagen -->
-          <img src="{% static 'slides/2.png' %}" alt="Imagen 2">
-        </div>
-        <div class="carousel-item" style="background-color: #f39c12;">
-          <!-- Cuarto Slide: Imagen -->
-          <img src="{% static 'slides/3.png' %}" alt="Imagen 3">
-        </div>
-      </div>
-
-      <button class="carousel-button carousel-button-prev" onclick="prevSlide()">❮</button>
-      <button class="carousel-button carousel-button-next" onclick="nextSlide()">❯</button>
-
-      <div class="carousel-indicators">
-        <div class="indicator" onclick="goToSlide(0)"></div>
-        <div class="indicator" onclick="goToSlide(1)"></div>
-        <div class="indicator" onclick="goToSlide(2)"></div>
-      </div>
-    </div>
-
-    <div class="contact-form-container" id="contact-form-container">
-      <h2>Contacto</h2>
-      <form id="contact-form" action="#" method="post">
-        {% csrf_token %}  <!-- Agrega esta línea para incluir el token CSRF -->
-    
-        <label for="name">Nombre:</label>
-        <input type="text" id="fname" name="fname" required>
-    
-        <label for="email">Correo electrónico:</label>
-        <input type="email" id="femail" name="femail" required>
-    
-        <label for="message">Mensaje:</label>
-        <textarea id="message" name="message" required></textarea>
-    
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
-
-    <!-- Modal inicio sesion -->
-
-    <div class="modal" id="loginModal">
-      <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>Iniciar Sesión</h2>
-
-        <form id="loginForm" method="post" action="{% url 'login_view' %}">
+      <div class="contact-form-container" id="contact-form-container">
+        <h2>Contacto</h2>
+        <form id="contact-form" action="#" method="post">
           {% csrf_token %}
+          <!-- Agrega esta línea para incluir el token CSRF -->
+
+          <label for="name">Nombre:</label>
+          <input type="text" id="fname" name="fname" required />
+
           <label for="email">Correo electrónico:</label>
-          <input type="email" id="email" name="email" required>
-    
-          <label for="password">Contraseña:</label>
-          <input type="password" id="password" name="password" required>
-    
-          <button type="submit" id="loginButton" class="modal-button">Iniciar Sesión</button>
-          <br>
-          <button type="button" id="createAccountButton" class="modal-button">Crear Cuenta</button>
+          <input type="email" id="femail" name="femail" required />
+
+          <label for="message">Mensaje:</label>
+          <textarea id="message" name="message" required></textarea>
+
+          <button type="submit">Enviar</button>
         </form>
       </div>
+
+      <!-- Modal inicio sesion -->
+
+      <div class="modal custom-login-modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Iniciar Sesión</h2>
+    
+            <form id="loginForm" method="post" action="{% url 'login_view' %}">
+                {% csrf_token %}
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required />
+    
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required />
+    
+                <button type="submit" id="loginButton" class="modal-button">
+                    Iniciar Sesión
+                </button>
+                <br />
+            </form>
+        </div>
     </div>
 
-  </div>
+      <!-- modal crear cuenta -->
 
-  
-  <!-- scripts -->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  <script src="{% static 'js/carousel.js' %}"></script>
-  <script src="{% static 'js/contacto.js' %}"></script>
+      <div class="modal create-account-modal" id="createAccountModal">
+        <div class="modal-content">
+            <span class="close" id="closeCreateAccountModal">&times;</span>
+            <h2>Crear Cuenta</h2>
+    
+            <form id="createAccountForm" method="post" action="{% url 'crear_cuenta' %}">
+                {% csrf_token %}
+                <label for="user_name">Nombre:</label>
+                <input type="text" id="user_name" name="user_name" required />
+    
+                <label for="user_lastname">Apellido:</label>
+                <input type="text" id="user_lastname" name="user_lastname" required />
+    
+                <label for="user_password">Contraseña:</label>
+                <input type="password" id="user_password" name="user_password" required />
+    
+                <label for="user_mail">Correo electrónico:</label>
+                <input type="email" id="user_mail" name="user_mail" required />
+    
+                <label for="user_fono">Teléfono:</label>
+                <input type="text" id="user_fono" name="user_fono" required />
+    
+                <button type="submit" id="createAccountSubmitButton" class="modal-button">
+                    Crear Cuenta
+                </button>
+            </form>
+        </div>
+    </div>
 
+    </div>
 
-  <script>
-    $(document).ready(function () {
-      const $loginModalButton = $('#loginModal');
-      const $closeModalButton = $('#closeModal');
-      const $modal = $('.modal');
-      const $loginButton = $('#loginButton');
-      const $createAccountButton = $('#createAccountButton');
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{% static 'js/carousel.js' %}"></script>
+    <script src="{% static 'js/contacto.js' %}"></script>
 
-      // Abre el modal al hacer clic en el botón de iniciar sesión desde la barra de navegación
-      $loginModalButton.on('click', function () {
-        $modal.show();
-      });
+    <!-- inicio de sesion y contacto -->
 
-      // Cierra el modal al hacer clic en el botón de cerrar
-      $closeModalButton.on('click', function () {
-        $modal.hide();
-      });
+    <script>
+      $(document).ready(function () {
+        const $loginModalButton = $("#loginModal");
+        const $closeModalButton = $("#closeModal");
+        const $modal = $(".custom-login-modal");
+        const $loginButton = $("#loginButton");
 
-      // Cierra el modal si se hace clic fuera del área del modal
-      $(window).on('click', function (event) {
-        if (event.target === $modal[0]) {
+        // Abre el modal al hacer clic en el botón de iniciar sesión desde la barra de navegación
+        $loginModalButton.on("click", function () {
+          $modal.show();
+        });
+
+        // Cierra el modal al hacer clic en el botón de cerrar
+        $closeModalButton.on("click", function () {
           $modal.hide();
-        }
+        });
+
+        // Cierra el modal si se hace clic fuera del área del modal
+        $(window).on("click", function (event) {
+          if (event.target === $modal[0]) {
+            $modal.hide();
+          }
+        });
+
+        // Asigna las funciones a los botones
+        $loginButton.on("click", function () {
+          console.log("Iniciar Sesión");
+          $modal.hide();
+        });
+        
+      });
+    </script>
+
+    <!-- crear cuenta -->
+
+<!-- Script para manejar el modal de crear cuenta -->
+<script>
+  $(document).ready(function () {
+      const $openCreateAccountModalLink = $("#createAccountLink");
+      const $closeCreateAccountModalButton = $("#closeCreateAccountModal");
+      const $createAccountModal = $(".create-account-modal");
+
+      // Abre el modal de crear cuenta solo cuando se hace clic en el enlace correspondiente
+      $openCreateAccountModalLink.on("click", function (e) {
+          e.preventDefault(); // Evita que el enlace realice la acción predeterminada (navegación)
+          $createAccountModal.show();
       });
 
-      // Asigna las funciones a los botones
-      $loginButton.on('click', function () {
-        // Agrega aquí la lógica de inicio de sesión
-        console.log('Iniciar Sesión');
-        $modal.hide();
+      // Cierra el modal de crear cuenta al hacer clic en el botón de cerrar
+      $closeCreateAccountModalButton.on("click", function () {
+          $createAccountModal.hide();
       });
 
-      $createAccountButton.on('click', function () {
-        // Agrega aquí la lógica de creación de cuenta
-        console.log('Crear Cuenta');
-        $modal.hide();
-      });
-    });
-  </script>
-</body>
+      // Otras funciones relacionadas con el modal de crear cuenta
+  });
+</script>
+
+
+  </body>
 </html>

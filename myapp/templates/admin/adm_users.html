@@ -65,68 +65,6 @@
     {% endfor %}
 
     <!-- Contenedor del formulario de edición -->
-    <div id="edit-user-form-container" style="display: none">
-      <h2>Editar Usuario</h2>
-      <form id="edit-user-form" class="user-form">
-        {% csrf_token %}
-        <input
-          type="hidden"
-          name="edit_user_id"
-          value="{{ user_data.user_id }}"
-        />
-
-        <label for="edit_user_name">Nombre:</label>
-        <input
-          type="text"
-          name="edit_user_name"
-          value="{{ user_data.user_name }}"
-          required
-        />
-
-        <label for="edit_user_lastname">Apellido:</label>
-        <input
-          type="text"
-          name="edit_user_lastname"
-          value="{{ user_data.user_lastname }}"
-          required
-        />
-
-        <label for="edit_user_password">Contraseña:</label>
-        <input
-          type="password"
-          name="edit_user_password"
-          value="{{ user_data.user_password }}"
-          required
-        />
-
-        <label for="edit_user_mail">Correo Electrónico:</label>
-        <input
-          type="email"
-          name="edit_user_mail"
-          value="{{ user_data.user_mail }}"
-          required
-        />
-
-        <label for="edit_user_fono">Teléfono:</label>
-        <input
-          type="text"
-          name="edit_user_fono"
-          value="{{ user_data.user_fono }}"
-          required
-        />
-
-        <label for="edit_rol_id">Rol:</label>
-        <select name="edit_rol_id" required>
-          <option value="cli">Cliente</option>
-          <option value="per">Personal</option>
-          <option value="adm">Administrador</option>
-        </select>
-
-        <input type="hidden" name="edit_user_id" value="" />
-
-        <button type="submit">Guardar Cambios</button>
-      </form>
-    </div>
 
     <!-- añadir usuario -->
 

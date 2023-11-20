@@ -1,0 +1,110 @@
+/* Estilos para el modal del carrito */
+#modal-container .modal-content {
+  padding-top: 45px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff; /* Fondo blanco */
+  color: #000; /* Texto negro */
+  border: 2px solid blue; /* Borde azul */
+  border-radius: 10px; /* Bordes redondeados */
+  max-width: 400px; /* Ancho máximo */
+  position: fixed; /* Posición fija */
+  top: 50px; /* Distancia desde la parte superior */
+  right: 20px; /* Distancia desde la derecha */
+}
+
+.modal-header{
+  padding-left: 20px;
+}
+
+/* Estilos para el botón Cerrar */
+#modal-container .modal-header .close {
+  color: blue; /* Texto azul */
+  font-size: larger;
+  border-radius: 0%;
+}
+
+/* Estilos para el contenido dentro del modal del carrito */
+#modal-container .modal-body {
+  padding: 20px;
+}
+
+/* Estilos para la tabla dentro del modal del carrito */
+#modal-container .modal-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+/* Estilos para las celdas de la tabla dentro del modal del carrito */
+#modal-container .modal-body table th,
+#modal-container .modal-body table td {
+  border: 1px solid blue; /* Borde azul */
+  padding: 10px;
+}
+
+/* Estilos para los botones dentro del modal del carrito */
+#modal-container .modal-footer a.btn {
+  margin: 5px;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer;
+}
+
+/* Estilos para el botón Limpiar */
+#modal-container .modal-footer .btn-danger {
+  background-color: #dc3545; /* Rojo */
+  color: #fff; /* Texto blanco */
+  margin-right: 5px; /* Margen a la derecha para separar de otro botón */
+}
+
+/* Estilos para el botón Ir a comprar */
+#modal-container .modal-footer .btn-success {
+  background-color: blue; /* Azul */
+  color: #fff; /* Texto blanco */
+  margin-left: 5px; /* Margen a la izquierda para separar de otro botón */
+}
+
+/* Estilo para el contenedor de las tarjetas */
+#service-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Ajusta el espacio entre las tarjetas */
+}
+
+/* Estilo para cada tarjeta individual */
+.service-card {
+  flex: 0 0 30%; /* Establece el ancho de cada tarjeta */
+  margin: 10px;
+  border: 1px solid #ddd; /* Borde para las tarjetas */
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+.service-card .card-header {
+  background-color: #f2f2f2; /* Color de fondo para el encabezado de la tarjeta */
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd; /* Borde inferior para el encabezado */
+}
+
+.service-card .card-body {
+  padding: 10px;
+}
+
+.informacion {
+  display: block;
+  background-color: #4caf50; /* Color de fondo para el enlace "Agregar al Carrito" */
+  color: #fff; /* Color del texto para el enlace */
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px; /* Bordes redondeados para el enlace */
+  margin-top: 10px;
+}
+
+#service-section, h2,
+.service-card .card-header,
+.service-card .card-body,
+.informacion {
+  font-family: 'Arial', sans-serif;
+}

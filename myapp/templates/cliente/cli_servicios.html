@@ -1,0 +1,19 @@
+<h2>Contratar Servicios</h2>
+
+<!-- Contenedor para mostrar los servicios como cards -->
+<div class="card-container" id="service-section" style="display: flex; flex-wrap: wrap;">
+    {% for servicio in servicios %}
+      <div class="service-card" style="flex: 0 0 30%; margin: 10px;">
+        <div class="card-header">
+          <h5>{{ servicio.ser_desc }} </h5>
+        </div>
+        <div class="card-body">
+          <p>Precio: ${{ servicio.ser_prec }}</p>
+          <p>Duración: {{ servicio.ser_durac }}</p>
+        </div>
+        <a class="informacion" href="{% url 'Add' servicio.ser_id %}">Agregar al Carrito</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  

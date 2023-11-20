@@ -10,6 +10,7 @@
   <title>ServiExpress</title>
     <!-- .css -->
   <link rel="stylesheet" href="{% static 'styles/nav.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/serviceform.css' %}">
   <link rel="stylesheet" href="{% static 'styles/usersTable.css' %}">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,7 +23,7 @@
     <nav>
       <div class="navbar">
         <div class="logo">
-          <a href="/">
+          <a href="/adm_home">
             <img src="{% static 'LogoPokebola.png' %}" alt="Logo">
           </a>
         </div>
@@ -30,10 +31,12 @@
         <div class="nav-items">
           <ul>
             <li><a href="#">Atenciones</a></li>
-            <li><a href="#">Proveedores</a></li>
+            <li><a href="#" id="servicios-link">Servicios</a></li>
+            <li><a href="#" id="proveedores-link">Proveedores</a></li>
             <li><a href="#">Pedidos</a></li>
             <li><a href="#">Inventario</a></li>
             <li><a href="#" id="usuarios-link">Usuarios</a></li>
+            <li><a href="/">Cerrar Sesión</a></li>
           </ul>
         </div>
       </div>
@@ -42,11 +45,18 @@
 
   <div class="content" style="margin-top: 100px;">
     <!-- Contenido adicional de tu página de inicio -->
+    <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
 
-    <div id="container-adm_users">
+    <div id="container-adm_servicios" class="dynamic-content-container">
       <!-- Aquí se cargará el contenido dinámico -->
-
     </div>
+    <div id="container-adm_proveedores" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+    <div id="container-adm_users" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
 
   </div>
 
@@ -54,29 +64,110 @@
   <!-- scripts -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{% static 'js/carousel.js' %}"></script>
 
+  <!-- servicios -->
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Servicios
+      $("#servicios-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_servicios.html
+        $.ajax({
+          url: "{% url 'adm_servicios' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_servicios").html(data).show();
+            $("#limpiarPantallaServicios").show();
+            $("#container-adm_users").html(''); // Oculta el contenido de Usuarios
+            $("#limpiarPantallaUsuarios").hide(); // Oculta el botón de limpiar pantalla de Usuarios
+            $("#container-adm_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Servicios");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Servicios
+      $("#limpiarPantallaServicios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- proveedores -->
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Proveedores
+      $("#proveedores-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_proveedores.html
+        $.ajax({
+          url: "{% url 'adm_proveedores' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_proveedores").html(data).show();
+            $("#limpiarPantallaProveedores").show();
+            $("#container-adm_servicios").html(''); // Oculta el contenido de Servicios
+            $("#limpiarPantallaServicios").hide(); // Oculta el botón de limpiar pantalla de Servicios
+            $("#container-adm_users").html(''); // Oculta el contenido de Usuarios
+            $("#limpiarPantallaUsuarios").hide(); // Oculta el botón de limpiar pantalla de Usuarios
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Proveedores");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Proveedores
+      $("#limpiarPantallaProveedores").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- usuarios -->
   <script>
     $(document).ready(function () {
       // Manejar el clic en el enlace de Usuarios
       $("#usuarios-link").on("click", function (e) {
         e.preventDefault();
-
+  
         // Realizar una solicitud AJAX para obtener el contenido de adm_users.html
         $.ajax({
-          url: "{% url 'adm_users' %}",  // Ajusta esto según tu configuración de URL
+          url: "{% url 'adm_users' %}",
           method: "GET",
           success: function (data) {
-            // Colocar el contenido en el contenedor dinámico
-            $("#container-adm_users").html(data);
+            $(".adm-container").hide();
+            $("#container-adm_users").html(data).show();
+            $("#limpiarPantallaUsuarios").show();
+            $("#container-adm_servicios").html(''); // Oculta el contenido de Servicios
+            $("#limpiarPantallaServicios").hide(); // Oculta el botón de limpiar pantalla de Servicios
+            $("#container-adm_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
           },
           error: function () {
-            alert("Error al cargar el contenido");
+            alert("Error al cargar el contenido de Usuarios");
           },
         });
       });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Usuarios
+      $("#limpiarPantallaUsuarios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
     });
   </script>
-
 
 </body>
 </html>

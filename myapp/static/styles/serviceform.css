@@ -1,0 +1,97 @@
+/* Estilos para el formulario de añadir servicio */
+/* Agrega estos estilos a tu hoja de estilo CSS */
+
+
+
+
+.add-service-button {
+    background-color: #4caf50; /* Color de fondo verde */
+    color: #fff; /* Color del texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Borde */
+    border-radius: 5px; /* Radio de borde para esquinas redondeadas */
+    cursor: pointer; /* Cursor al pasar el ratón */
+    transition: background-color 0.3s; /* Transición de color de fondo */
+    display: flex; /* Muestra los elementos como un contenedor flexible */
+    align-items: center; /* Centra verticalmente los elementos dentro del botón */
+  }
+  
+  .add-service-button:hover {
+    background-color: #45a049; /* Cambio de color al pasar el ratón */
+  }
+  
+  /* Estilo para el símbolo "+" */
+  .add-service-button::before {
+    content: '\002B'; /* Código Unicode para el símbolo "+" */
+    margin-right: 8px; /* Espaciado a la derecha del símbolo "+" */
+  }
+
+#add-service-form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  #add-service-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  #add-service-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  #add-service-submit {
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #add-service-submit:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Estilos para las cards de servicios */
+  .service-card {
+    max-width: 300px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .service-card h3 {
+    margin-bottom: 10px;
+  }
+  
+  .service-card p {
+    margin-bottom: 15px;
+  }
+  
+  .service-card button {
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .service-card button:hover {
+    background-color: #2980b9;
+  }
+  

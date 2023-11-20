@@ -1,0 +1,48 @@
+<h2>Vehículos Inscritos</h2>
+
+{% if vehiculo %}
+  <table class="vehicle-table">
+    <thead>
+      <tr>
+        <th class="table-header">Patente</th>
+        <th class="table-header">Marca</th>
+        <th class="table-header">Modelo</th>
+        <th class="table-header">Año</th>
+        <th class="table-header">Imagen</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vehiculo in vehiculo %}
+        <tr>
+          <td>{{ vehiculo.veh_patente }}</td>
+          <td>{{ vehiculo.veh_marca }}</td>
+          <td>{{ vehiculo.veh_modelo }}</td>
+          <td>{{ vehiculo.veh_anno }}</td>
+          <td>
+            {% if vehiculo.veh_img %}
+              <img class="clickable-image" src="{{ vehiculo.veh_img.url }}" alt="{{ vehiculo.veh_patente }}" class="vehicle-image">
+            {% else %}
+              Sin imagen
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="no-vehicles">No hay vehículos inscritos.</p>
+{% endif %}
+
+<script>
+  // Añade un script jQuery para manejar el clic en las imágenes
+  $(document).ready(function() {
+    // Manejar el clic en las imágenes con la clase 'clickable-image'
+    $(".clickable-image").on("click", function() {
+      // Obtener la fuente original de la imagen
+      var originalSrc = $(this).attr("src");
+      
+      // Mostrar la imagen en su resolución real en una ventana emergente
+      window.open(originalSrc, '_blank');
+    });
+  });
+</script>

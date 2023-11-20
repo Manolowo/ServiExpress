@@ -34,6 +34,7 @@ class Vehiculo(models.Model):
     veh_marca= models.CharField(max_length=15, null=False)
     veh_modelo= models.CharField(max_length=25, null=False)
     veh_anno = models.CharField(max_length=4, null=False)
+    veh_img = models.ImageField(upload_to='veh_img/', null=True, blank=True)
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     def __str__(self):
