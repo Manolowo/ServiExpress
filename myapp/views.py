@@ -10,6 +10,8 @@ from .models import UserProfile
 from .models import Servicio
 from .models import Proveedor
 from .models import Vehiculo
+from .models import Atencion
+
 
 from myapp.carrito import Carrito
 
@@ -99,7 +101,80 @@ def cli_vehiculo(request):
     # Filtrar los vehículos por el UserProfile del usuario actual
     vehiculo = Vehiculo.objects.filter(userProfile=user_profile)
 
+    if request.method == 'POST':
+        try:
+            # Obtener datos del formulario
+            veh_patente = request.POST.get('veh_patente')
+            veh_marca = request.POST.get('veh_marca')
+            veh_modelo = request.POST.get('veh_modelo')
+            veh_anno = request.POST.get('veh_anno')
+            veh_img = request.FILES.get('veh_img')
+
+            # Crear y guardar el nuevo vehículo
+            nuevo_vehiculo = Vehiculo(
+                veh_patente=veh_patente,
+                veh_marca=veh_marca,
+                veh_modelo=veh_modelo,
+                veh_anno=veh_anno,
+                veh_img=veh_img,
+                userProfile=user_profile
+            )
+            nuevo_vehiculo.save()
+
+            vehiculo_data = {
+                'veh_patente': nuevo_vehiculo.veh_patente,
+                'veh_marca': nuevo_vehiculo.veh_marca,
+                'veh_modelo': nuevo_vehiculo.veh_modelo,
+                'veh_anno': nuevo_vehiculo.veh_anno,
+                'veh_img': nuevo_vehiculo.veh_img.url if nuevo_vehiculo.veh_img else None,
+                'user_id': nuevo_vehiculo.userProfile.user_id,
+            }
+            return JsonResponse(vehiculo_data)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
     return render(request, 'cliente/cli_vehiculo.html', {'vehiculo': vehiculo})
+
+@login_required
+def cli_atencion(request):
+    try:
+        user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
+        print("User ID from session:", request.session.get('user_id'))
+        print("User Profile for current user:", user_profile)
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'error': 'UserProfile no encontrado'})
+
+    if request.method == 'POST':
+        try:
+            # Obtener datos del formulario
+            ate_list = request.POST.get('ate_list')
+            ate_date = request.POST.get('ate_date')
+            ate_prec = request.POST.get('ate_prec')
+
+            # Crear y guardar el nuevo usuario
+            addatencion = Atencion(
+                ate_list=ate_list,
+                ate_date=ate_date,
+                ate_prec=ate_prec,
+                userProfile=user_profile
+            )
+            addatencion.save()
+
+            ate_data = {
+                'ate_list': addatencion.ate_list,
+                'ate_date': addatencion.ate_date.strftime('%Y-%m-%d'),  # Formatear la fecha
+                'ate_prec': addatencion.ate_prec,
+                'user_id': addatencion.userProfile.user_id,
+            }
+            return JsonResponse(ate_data)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+    atencion = Atencion.objects.filter(userProfile=user_profile)
+    return render(request, 'cliente/cli_atencion.html', {'atencion': atencion})
+
 
 def emp_home(request):
     return render(request, 'personal/per_home.html')
@@ -111,9 +186,53 @@ def adm_users(request):
     users = UserProfile.objects.all()
     return render(request, 'admin/adm_users.html', {'users': users})
 
+def adm_atenciones(request):
+    users = UserProfile.objects.all()
+    atenciones = Atencion.objects.all()
+    vehiculo = Vehiculo.objects.all()
+    return render(request, 'admin/adm_atenciones.html', {'vehiculo': vehiculo, 'users': users , 'atenciones': atenciones})
+
 def adm_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'admin/adm_servicios.html', {'servicios': servicios})
+
+@login_required
+def adm_vehiculos(request):
+    # Obtener todos los vehículos
+    vehiculos = Vehiculo.objects.all()
+
+    if request.method == 'POST':
+        try:
+            # Obtener datos del formulario
+            veh_patente = request.POST.get('veh_patente')
+            veh_marca = request.POST.get('veh_marca')
+            veh_modelo = request.POST.get('veh_modelo')
+            veh_anno = request.POST.get('veh_anno')
+            veh_img = request.FILES.get('veh_img')
+
+            # Crear y guardar el nuevo vehículo
+            nuevo_vehiculo = Vehiculo(
+                veh_patente=veh_patente,
+                veh_marca=veh_marca,
+                veh_modelo=veh_modelo,
+                veh_anno=veh_anno,
+                veh_img=veh_img,
+            )
+            nuevo_vehiculo.save()
+
+            vehiculo_data = {
+                'veh_patente': nuevo_vehiculo.veh_patente,
+                'veh_marca': nuevo_vehiculo.veh_marca,
+                'veh_modelo': nuevo_vehiculo.veh_modelo,
+                'veh_anno': nuevo_vehiculo.veh_anno,
+                'veh_img': nuevo_vehiculo.veh_img.url if nuevo_vehiculo.veh_img else None,
+            }
+            return JsonResponse(vehiculo_data)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+    return render(request, 'admin/adm_vehiculos.html', {'vehiculos': vehiculos})
 
 @csrf_exempt
 def add_service(request):

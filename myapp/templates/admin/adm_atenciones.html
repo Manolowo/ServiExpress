@@ -1,0 +1,26 @@
+<h2>Atenciones Inscritas</h2>
+
+{% if atenciones %}
+  <table class="atencion-table">
+    <thead>
+      <tr>
+        <th class="table-header">Cliente</th>
+        <th class="table-header">Lista de Atenciones</th>
+        <th class="table-header">Fecha de Atencion</th>
+        <th class="table-header">Total de la Atencion</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for atencion in atenciones %}
+        <tr>
+          <td>{{ atencion.userProfile.user_name }} {{ atencion.userProfile.user_lastname }}</td>
+          <td>{{ atencion.ate_list }}</td>
+          <td>{{ atencion.ate_date }}</td>
+          <td>{{ atencion.ate_prec }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="no-atencion">No hay Atenciones inscritas.</p>
+{% endif %}

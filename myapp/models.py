@@ -3,7 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django import forms
+
 from django.urls import reverse
 
 from django.db.models.signals import post_save
@@ -25,7 +25,6 @@ class UserProfile(models.Model):
     user_mail = models.EmailField(null=False)
     user_fono = models.IntegerField(null=False)
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
-
     def __str__(self):
         return self.user_name +' '+ self.user_lastname +' - '+ self.rol.rol_id  
 
@@ -60,7 +59,8 @@ class Proveedor(models.Model):
 class Atencion(models.Model):
     ate_id = models.AutoField(primary_key=True)
     ate_list = models.CharField(max_length=250, null=False, default=None)
-    ate_date = models.DateTimeField()
+    ate_date = models.DateTimeField(unique_for_date=True)
+    ate_prec = models.IntegerField(null=False, default=None)
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 
     class Meta:

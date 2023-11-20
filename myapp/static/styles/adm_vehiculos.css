@@ -1,0 +1,78 @@
+/* Estilo para el botón de añadir vehículo */
+#add-vehiculo-btn {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para el contenedor del formulario de añadir vehículo */
+  .vehiculo-form-container {
+    display: none;
+  }
+  
+  /* Estilo para el formulario de añadir vehículo */
+  .vehiculo-form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .vehiculo-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .vehiculo-form input,
+  .vehiculo-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  .vehiculo-form button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Estilo para la tabla de vehículos */
+  .vehicle-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .vehicle-table th,
+  .vehicle-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .vehicle-table th {
+    background-color: rgb(18, 18, 122);
+    color: #fff;
+  }
+  
+  /* Estilo para la imagen en la tabla */
+  .clickable-image {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  /* Estilo para el mensaje de no hay vehículos */
+  .no-vehicles {
+    margin-top: 20px;
+    font-style: italic;
+    color: #888;
+  }

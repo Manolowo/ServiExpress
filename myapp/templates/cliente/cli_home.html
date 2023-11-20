@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/cli_home.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/vehiculo.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'styles/cli_vehiculo.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'styles/cli_atencion.css' %}" />
 
   </head>
 
@@ -21,14 +24,14 @@
       <nav>
         <div class="navbar">
           <div class="logo">
-            <a href="/">
+            <a href="/cli_home">
               <img src="{% static 'LogoPokebola.png' %}" alt="Logo" />
             </a>
           </div>
 
           <div class="nav-items">
             <ul>
-              <li><a href="#" >Atenciones</a></li>
+              <li><a href="#" id="atencion-link">Atenciones</a></li>
               <li><a href="#" id="servicios-link">Servicios</a></li>
               <li><a href="#" id="vehiculo-link">Mi Vehiculo</a></li>
               <li><a href="#" id="carrito-link">Carrito</a></li>
@@ -43,6 +46,10 @@
       <!-- Contenido adicional de tu página de inicio -->
 
       <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
+
+      <div id="container-cli_atencion" class="dynamic-content-container">
+        <!-- Aquí se cargará el contenido dinámico -->
+      </div>
 
       <div id="container-cli_servicios" class="dynamic-content-container">
         <!-- Aquí se cargará el contenido dinámico -->
@@ -104,7 +111,7 @@
                   <div class="col-6">
                     <a href="{% url 'CLS' %}" class="btn btn-danger"> Limpiar</a>
                     {% if request.session.carrito.items %}
-                    <a href="formularioCompra" class="btn btn-success">Ir a comprar</a>
+                    <a href="#" class="btn btn-success">Inscribir atencion</a>
                   </div>
                   {% else %}
                   {% endif %}
@@ -126,6 +133,42 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+  <!-- atenciones -->
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Servicios
+      $("#atencion-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_servicios.html
+        $.ajax({
+          url: "{% url 'cli_atencion' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-cli_atencion").html(data).show();
+
+            $("#container-cli_servicios").html(''); 
+            $("#limpiarPantallaServicios").hide(); 
+            $("#container-cli_vehiculo").html(''); 
+            $("#limpiarPantallaVehiculo").hide();
+
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Servicios");
+          },
+        });
+      });
+      // Manejar el clic en el botón de limpiar pantalla de Usuarios
+      $("#limpiarPantallaUsuarios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+  
+    });
+</script>
+
   <!-- servicios -->
 
   <script>
@@ -142,11 +185,20 @@
             $(".adm-container").hide();
             $("#container-cli_servicios").html(data).show();
 
+            $("#container-cli_atencion").html(''); 
+            $("#limpiarPantallaAtencion").hide(); 
+            $("#container-cli_vehiculo").html(''); 
+            $("#limpiarPantallaVehiculo").hide();
+
           },
           error: function () {
             alert("Error al cargar el contenido de Servicios");
           },
         });
+      });
+      $("#limpiarPantallaUsuarios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
       });
   
     });
@@ -168,12 +220,22 @@
           $(".adm-container").hide();
           $("#container-cli_vehiculo").html(data).show();
 
+          $("#container-cli_atencion").html(''); 
+          $("#limpiarPantallaAtencion").hide(); 
+          $("#container-cli_servicios").html(''); 
+          $("#limpiarPantallaServicios").hide();
+
+
         },
         error: function () {
           alert("Error al cargar el contenido de Vehiculos");
         },
       });
     });
+    $("#limpiarPantallaUsuarios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
 
   });
 </script>

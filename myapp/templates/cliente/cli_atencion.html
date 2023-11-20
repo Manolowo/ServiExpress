@@ -1,0 +1,103 @@
+<h2>Atenciones Inscritas</h2>
+
+{% if request.session.carrito.items %}
+<div id="add-atencion-form-container" class="atencion-form-container">
+  <form id="add-atencion-form" class="atencion-form">
+    {% csrf_token %}
+
+    <label for="ate_list">Lista de servicios Requeridos:</label>
+    <input
+      type="text"
+      name="ate_list"
+      value="{% for key, value in request.session.carrito.items %}{{ value.nombre }}, {% endfor %}"
+      required
+      readonly
+    />
+
+    <label for="ate_date">Seleccionar fecha Atencion:</label>
+    <input type="datetime-local" name="ate_date" required />
+
+    <label for="ate_prec">Total: </label>
+    <input
+      type="number"
+      name="ate_prec"
+      value="{{ totalCarrito }}"
+      required
+      readonly
+    />
+
+    <button type="submit" id="add-atencion-btn">+ Inscribir Atencion</button>
+  </form>
+</div>
+
+{% else %}
+<h2>Sin Servicios en el carrito</h2>
+{% endif %} 
+{% if atencion %}
+<table class="atencion-table">
+  <thead>
+    <tr>
+      <th class="table-header">Lista de Atenciones</th>
+      <th class="table-header">Fecha de Atencion</th>
+      <th class="table-header">Total de la Atencion</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for atencion in atencion %}
+    <tr>
+      <td>{{ atencion.ate_list }}</td>
+      <td>{{ atencion.ate_date }}</td>
+      <td>{{ atencion.ate_prec }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="no-atencion">No hay Atenciones inscritas.</p>
+{% endif %}
+
+<!-- añadir atencion -->
+
+<script>
+    $(document).ready(function () {
+      // Manejar el envío del formulario
+      $("#add-atencion-form").on("submit", function (e) {
+        e.preventDefault();
+  
+        // Obtener los datos del formulario
+        var formData = $(this).serialize();
+  
+        // Realizar una solicitud AJAX para agregar la atención
+        $.ajax({
+          url: "{% url 'cli_atencion' %}",
+          method: "POST",
+          data: formData,
+          success: function (data) {
+            // Manejar el éxito de la solicitud
+            Swal.fire({
+            icon: 'success',
+            title: 'Atención agregada exitosamente',
+          });
+
+            // Limpiar el carrito después de agregar la atención
+            $.ajax({
+              url: "{% url 'CLS' %}",
+              method: "GET",
+              success: function () {
+                
+              },
+              error: function () {
+                // Manejar errores al limpiar el carrito
+                alert("Error al limpiar el carrito");
+              },
+            });
+          },
+          error: function () {
+            // Manejar errores al agregar la atención
+            alert("Error al agregar la atención");
+          },
+        });
+      });
+    });
+  </script>
+  

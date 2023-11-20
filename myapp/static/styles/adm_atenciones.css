@@ -1,0 +1,26 @@
+h2{
+    padding-left: 15px;
+}
+
+.atencion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .atencion-table th, .atencion-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .atencion-table th {
+    background-color:rgb(18, 18, 122);
+    color: #ddd;
+  }
+  
+  .no-atencion {
+    margin-top: 20px;
+    font-style: italic;
+    color: #777;
+  }

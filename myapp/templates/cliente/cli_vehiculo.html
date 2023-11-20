@@ -1,5 +1,31 @@
 <h2>Vehículos Inscritos</h2>
 
+<button type="submit" id="add-vehiculo-btn" class="modal-button add-veh-button">Añadir tu Vehiculo</button>
+
+<div id="add-vehiculo-form-container" class="vehiculo-form-container" style="display: none">
+  <form id="add-vehiculo-form" class="vehiculo-form" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="veh_patente">Patente:</label>
+    <input type="text" name="veh_patente" maxlength="6" required />
+
+    <label for="veh_marca">Marca:</label>
+    <input type="text" name="veh_marca" required />
+
+    <label for="veh_modelo">Modelo:</label>
+    <input type="text" name="veh_modelo" required />
+
+    <label for="veh_anno">Año:</label>
+    <input type="number" name="veh_anno" maxlength="4" required />
+
+    <label for="veh_img">Imagen:</label>
+    <input type="file" name="veh_img" accept="image/*" />
+
+    <button type="submit">Guardar</button>
+  </form>
+</div>
+
+
 {% if vehiculo %}
   <table class="vehicle-table">
     <thead>
@@ -43,6 +69,65 @@
       
       // Mostrar la imagen en su resolución real en una ventana emergente
       window.open(originalSrc, '_blank');
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el botón "Añadir Vehículo"
+    $("#add-vehiculo-btn").on("click", function () {
+      $("#add-vehiculo-form-container").toggle();
+    });
+
+    // Manejar el envío del formulario para añadir vehículo
+    $("#add-vehiculo-form").on("submit", function (e) {
+      e.preventDefault();
+
+      // Realizar una solicitud AJAX para agregar el vehículo a la base de datos
+      $.ajax({
+        url: "{% url 'cli_vehiculo' %}", // Ajusta esto según tu configuración de URL
+        method: "POST",
+        data: $(this).serialize(),
+        success: function (data) {
+          // Actualizar la tabla con los nuevos datos
+          // Puedes hacer esto también con una nueva solicitud AJAX o como mejor prefieras
+
+          // Limpiar el formulario y ocultarlo después de añadir el vehículo
+          $("#add-vehiculo-form")[0].reset();
+          $("#add-vehiculo-form-container").hide();
+
+          // Agregar el nuevo vehículo a la tabla
+          var newRow =
+            "<tr>" +
+            "<td>" +
+            data.veh_patente +
+            "</td>" +
+            "<td>" +
+            data.veh_marca +
+            "</td>" +
+            "<td>" +
+            data.veh_modelo +
+            "</td>" +
+            "<td>" +
+            data.veh_anno +
+            "</td>" +
+            "</tr>";
+
+          $("tbody").append(newRow);
+
+          // Mostrar el mensaje de éxito con SweetAlert2
+          Swal.fire({
+            icon: "success",
+            title: "Vehículo añadido",
+            showConfirmButton: false,
+            timer: 1500, // 1.5 segundos
+          });
+        },
+        error: function () {
+          alert("Error al añadir vehículo");
+        },
+      });
     });
   });
 </script>

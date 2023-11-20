@@ -9,6 +9,7 @@ urlpatterns=[
     path('crear_cuenta/', views.crear_cuenta, name='crear_cuenta'),
     
     path('cli_home/', views.cli_home, name='cli_home'),
+    path('cli_atencion/', views.cli_atencion, name='cli_atencion'),
     path('cli_servicios/', views.cli_servicios, name='cli_servicios'),
     path('cli_vehiculo/', views.cli_vehiculo, name='cli_vehiculo'),
     path('agregar/<int:ser_id>/', agregarServicio, name="Add"),
@@ -16,15 +17,16 @@ urlpatterns=[
     path('restar/<int:ser_id>/', restarServicio, name="Sub"),
     path('limpiar/', limpiarCarrito, name="CLS"),
 
-
     path('emp_home/', views.emp_home, name='emp_home'),
     
     path('adm_home/', views.adm_home, name='adm_home'),
+    path('adm_atenciones/', views.adm_atenciones, name='adm_atenciones'),
     path('adm_servicios/', views.adm_servicios, name='adm_servicios'),
     path('add_service/', views.add_service, name='add_service'),
     path('adm_proveedores/', views.adm_proveedores, name='adm_proveedores'),
     path('adm_users/', views.adm_users, name='adm_users'),
     path('add_user/', views.add_user, name='add_user'),
     path('delete_user/', views.delete_user, name='delete_user'),
+    path('adm_vehiculos', views.adm_vehiculos, name='adm_vehiculos'),
 
 ]
