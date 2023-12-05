@@ -88,7 +88,6 @@ def cli_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'cliente/cli_servicios.html', {'servicios': servicios})
 
-@login_required
 def cli_vehiculo(request):
     try:
         user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
@@ -136,7 +135,6 @@ def cli_vehiculo(request):
 
     return render(request, 'cliente/cli_vehiculo.html', {'vehiculo': vehiculo})
 
-@login_required
 def cli_atencion(request):
     try:
         user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
@@ -175,7 +173,6 @@ def cli_atencion(request):
     atencion = Atencion.objects.filter(userProfile=user_profile)
     return render(request, 'cliente/cli_atencion.html', {'atencion': atencion})
 
-
 def emp_home(request):
     return render(request, 'personal/per_home.html')
 
@@ -196,7 +193,6 @@ def adm_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'admin/adm_servicios.html', {'servicios': servicios})
 
-@login_required
 def adm_vehiculos(request):
     # Obtener todos los vehículos
     vehiculos = Vehiculo.objects.all()
