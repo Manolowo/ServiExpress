@@ -57,10 +57,17 @@ class Proveedor(models.Model):
         return self.pro_nom +' - '+ self.pro_mail
 
 class Atencion(models.Model):
+    estados = (
+        ('Solicitada', 'Solicitada'),
+        ('En Proceso','En Proceso'),
+        ('Cancelada', 'Cancelada'),
+        ('OK', 'OK'),
+    )
     ate_id = models.AutoField(primary_key=True)
     ate_list = models.CharField(max_length=250, null=False, default=None)
     ate_date = models.DateTimeField(unique_for_date=True)
     ate_prec = models.IntegerField(null=False, default=None)
+    ate_est = models.CharField(max_length=12, choices= estados, default='Solicitado')
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 
     class Meta:

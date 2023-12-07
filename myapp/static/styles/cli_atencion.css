@@ -1,69 +1,64 @@
-/* Estilos del formulario de atención */
-.atencion-form-container {
-    margin: 20px;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .atencion-form label {
-    display: block;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .atencion-form input,
-  .atencion-form button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .atencion-form button {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .atencion-form button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Estilos de la tabla de atenciones */
-  .atencion-table {
-    width: 100%;
-    margin: 20px;
-    border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  .atencion-table thead {
-    background-color: #4285f4;
-    color: #fff;
-  }
-  
-  .atencion-table th,
-  .atencion-table td {
-    padding: 15px;
-    text-align: left;
-  }
-  
-  .atencion-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  /* Estilos para cuando no hay atenciones */
-  .no-atencion {
-    color: #333;
-    text-align: center;
-    margin: 20px;
-  }
-  
-  .no-atencion::before {
-    content: '\2022'; /* Círculo de viñeta */
-    color: rgb(18, 18, 122);
-    font-size: 24px;
-    margin-right: 10px;
-  }
+/* Estilos del formulario de agregar atención */
+#add-atencion-form-container {
+  margin-top: 20px;
+}
+
+#add-atencion-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#add-atencion-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#add-atencion-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#add-atencion-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+#add-atencion-btn:hover {
+  background-color: #45a049;
+}
+
+/* Estilos de la tabla de atenciones */
+.atencion-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.atencion-table th,
+.atencion-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-header {
+  background-color: rgb(28, 18, 122);
+  color: #ddd;
+}
+
+/* Estilos del mensaje cuando no hay atenciones */
+.no-atencion {
+  margin-top: 20px;
+  font-style: italic;
+  color: #777;
+}
+
+/* Estilos de SweetAlert (popup de éxito) */
+.swal2-popup {
+  font-size: 1.2em;
+}

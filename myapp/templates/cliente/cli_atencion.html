@@ -40,14 +40,16 @@
       <th class="table-header">Lista de Atenciones</th>
       <th class="table-header">Fecha de Atencion</th>
       <th class="table-header">Total de la Atencion</th>
+      <th class="table-header">Estado de la Atencion</th>
     </tr>
   </thead>
   <tbody>
     {% for atencion in atencion %}
     <tr>
-      <td>{{ atencion.ate_list }}</td>
+      <td>{{ atencion.ate_list }}</td>    
       <td>{{ atencion.ate_date }}</td>
       <td>{{ atencion.ate_prec }}</td>
+      <td>{{ atencion.ate_est }}</td>
     </tr>
     {% endfor %}
   </tbody>
