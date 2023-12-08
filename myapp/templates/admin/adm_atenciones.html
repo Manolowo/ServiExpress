@@ -9,6 +9,7 @@
         <th class="table-header">Fecha de Atencion</th>
         <th class="table-header">Total de la Atencion</th>
         <th class="table-header">Estado de la Atencion</th>
+        <th class="table-header">Acciones</th> 
       </tr>
     </thead>
     <tbody>
@@ -18,10 +19,12 @@
           <td>{{ atencion.ate_list }}</td>
           <td>{{ atencion.ate_date }}</td>
           <td>{{ atencion.ate_prec }}</td>
-          
-          <!-- Cambiar estado -->
           <td>{{ atencion.ate_est }}</td>
 
+          <td>
+           
+          </td>
+        
         </tr>
       {% endfor %}
     </tbody>

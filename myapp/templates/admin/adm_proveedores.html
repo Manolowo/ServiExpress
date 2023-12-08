@@ -1,76 +1,110 @@
 <style>
-    /* Estilos para el formulario de añadir proveedor */
-    .proveedor-form-container {
-      margin-top: 20px;
-    }
-  
-    .proveedor-form label {
-      display: block;
-      margin-bottom: 5px;
-    }
-  
-    .proveedor-form input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-  
-    .proveedor-form button {
-      background-color: rgb(18, 18, 122);
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  
-    .proveedor-form button:hover {
-      background-color: rgb(18, 18, 122);
-    }
-  
-    /* Estilos para la tabla de proveedores */
-    .proveedor-table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-  
-    .proveedor-table th, .proveedor-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-  
-    .proveedor-table th {
-      background-color: rgb(18, 18, 122);
-      color: white;
-    }
-  
-    /* Estilos para la sección de mensajes de éxito */
-    .success-message {
-      margin-top: 20px;
-      padding: 10px;
-      background-color: #dff0d8;
-      border: 1px solid #d6e9c6;
-      color: #3c763d;
-      border-radius: 5px;
-    }
-  </style>
-  
+  /* Estilos para el formulario de añadir proveedor */
+  .proveedor-form-container {
+    margin-top: 20px;
+  }
+
+  .proveedor-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .proveedor-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .proveedor-form button {
+    background-color: rgb(18, 18, 122);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .proveedor-form button:hover {
+    background-color: rgb(18, 18, 122);
+  }
+
+  /* Estilos para la tabla de proveedores */
+  .proveedor-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  .proveedor-table th,
+  .proveedor-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .proveedor-table th {
+    background-color: rgb(18, 18, 122);
+    color: white;
+  }
+
+  /* Estilos para la sección de mensajes de éxito */
+  .success-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    border-radius: 5px;
+  }
+
+  /* Estilos para el botón con el ID 'add-proveedor-btn' */
+  #add-proveedor-btn {
+    background-color: #4caf50; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+  }
+
+  #add-proveedor-btn:hover {
+    background-color: #45a049; /* Cambio de color al pasar el mouse */
+  }
+
+  /* Estilos para los botones con la clase 'delete-proveedor-btn' */
+  .delete-proveedor-btn {
+    background-color: #f44336; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 8px 16px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    border: none; /* Sin borde */
+    border-radius: 3px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+  }
+
+  .delete-proveedor-btn:hover {
+    background-color: #d32f2f; /* Cambio de color al pasar el mouse */
+  }
+</style>
 
 <h2>Administración de Proveedores</h2>
 
-<!-- <button id="add-proveedor-btn" class="add-proveedor-button">
+<button id="add-proveedor-btn" class="add-proveedor-button">
   + Añadir Proveedor
-</button> -->
+</button>
 
 <div
   id="add-proveedor-form-container"
   class="proveedor-form-container"
   style="display: none"
 >
-  <form id="add-proveedor-form" class="proveedor-form">
+  <form
+    id="add-proveedor-form"
+    class="proveedor-form"
+    action="{% url 'add_proveedor' %}"
+  >
     {% csrf_token %}
     <label for="pro_nom">Nombre:</label>
     <input type="text" name="pro_nom" required />
@@ -97,10 +131,112 @@
       <td>{{ proveedor.pro_nom }}</td>
       <td>{{ proveedor.pro_mail }}</td>
       <td>
+        <button
+          class="delete-proveedor-btn"
+          data-proveedor-id="{{ proveedor.pro_id }}"
+        >
+          Eliminar
+        </button>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el botón "Añadir Usuario"
+    $("#add-proveedor-btn").on("click", function () {
+      $("#add-proveedor-form-container").toggle();
+    });
 
+    // Manejar el envío del formulario para añadir usuario
+    $("#add-proveedor-form").on("submit", function (e) {
+      e.preventDefault();
+
+      // Realizar una solicitud AJAX para agregar el usuario a la base de datos
+      $.ajax({
+        url: "{% url 'add_proveedor' %}", // Ajusta esto según tu configuración de URL
+        method: "POST",
+        data: $(this).serialize(),
+        success: function (data) {
+          // Actualizar la tabla con los nuevos datos
+          // Puedes hacer esto también con una nueva solicitud AJAX o como mejor prefieras
+
+          // Limpiar el formulario y ocultarlo después de añadir el usuario
+          $("#add-proveedor-form")[0].reset();
+          $("#add-proveedor-form-container").hide();
+
+          // Agregar el nuevo usuario a la tabla
+          var newRow =
+            "<tr>" +
+            "<td>" +
+            data.pro_id +
+            "</td>" +
+            "<td>" +
+            data.pro_nom +
+            "</td>" +
+            "<td>" +
+            data.pro_mail +
+            "</td>" +
+            "</tr>";
+
+          $("tbody").append(newRow);
+
+          // Mostrar el mensaje de éxito con SweetAlert2
+          Swal.fire({
+            icon: "success",
+            title: "Proveedor añadido",
+            showConfirmButton: false,
+            timer: 1500, // 1.5 segundos
+          });
+        },
+        error: function () {
+          alert("Error al añadir proveedor");
+        },
+      });
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el botón "Eliminar Proveedor"
+    $(".delete-proveedor-btn").on("click", function () {
+      var proveedorId = $(this).data("proveedor-id");
+      var clickedButton = $(this);
+
+      // Realizar una solicitud AJAX para eliminar el proveedor de la base de datos
+      $.ajax({
+        url: "{% url 'delete_proveedor' %}",
+        method: "POST",
+        data: { pro_id: proveedorId },
+        success: function (data) {
+          // Mostrar la alerta con SweetAlert2
+          if (data.success) {
+            Swal.fire({
+              icon: "success",
+              title: "Proveedor Eliminado",
+            });
+
+            // Eliminar la fila de la tabla
+            clickedButton.closest("tr").remove();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: data.message,
+            });
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error al eliminar proveedor",
+          });
+        },
+      });
+    });
+  });
+</script>

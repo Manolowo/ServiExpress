@@ -61,13 +61,13 @@ class Atencion(models.Model):
         ('Solicitada', 'Solicitada'),
         ('En Proceso','En Proceso'),
         ('Cancelada', 'Cancelada'),
-        ('OK', 'OK'),
+        ('Realizada', 'Realizada'),
     )
     ate_id = models.AutoField(primary_key=True)
     ate_list = models.CharField(max_length=250, null=False, default=None)
     ate_date = models.DateTimeField(unique_for_date=True)
     ate_prec = models.IntegerField(null=False, default=None)
-    ate_est = models.CharField(max_length=12, choices= estados, default='Solicitado')
+    ate_est = models.CharField(max_length=12, choices= estados, default='Solicitada')
     userProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None)
 
     class Meta:
@@ -82,13 +82,12 @@ class Atencion(models.Model):
 
 class Pedido(models.Model):
     estados = (
-        ('En Proceso','En Proceso'),
         ('Solicitado', 'Solicitado'),
         ('Cancelado', 'Cancelado'),
         ('Entregado', 'Entregado'),
     )
     ped_id = models.AutoField(primary_key=True)
-    ped_est = models.CharField(max_length=12, choices= estados, default='En Proceso')
+    ped_est = models.CharField(max_length=12, choices= estados, default='Solicitado')
     ped_fecha = models.DateTimeField(auto_now_add=True, null=False)
     atencion = models.ForeignKey(Atencion, on_delete=models.SET_NULL, null=True)
 

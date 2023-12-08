@@ -36,6 +36,25 @@
   </form>
 </div>
 
+<form id="user-filter-form">
+  <input
+    type="text"
+    id="search"
+    name="search"
+    placeholder="Buscar por nombre"
+  />
+  <select id="role_filter" name="role_filter">
+    <option value="" selected>Todos los roles</option>
+    <option value="Cliente">Cliente</option>
+    <option value="Personal">Personal</option>
+    <option value="Administrador">Administrador</option>
+  </select>
+  <button id="filtrar" type="button" onclick="filterUsers()">Filtrar</button>
+
+  <!-- Nuevo botón para generar PDF -->
+  <button type="button" onclick="generatePDF()">Generar PDF</button>
+</form>
+
 <table class="user-table">
   <thead>
     <tr>
@@ -47,7 +66,7 @@
       <th>Teléfono</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="user-table-body">
     {% for user in users %}
     <tr>
       <td>{{ user.rol.rol_id }}_{{ user.user_id }}</td>
@@ -64,7 +83,80 @@
     </tr>
     {% endfor %}
 
-    <!-- Contenedor del formulario de edición -->
+    <!-- Filtrado Usuarios -->
+    <script>
+      function filterUsers() {
+        var search = document.getElementById("search").value;
+        var roleFilter = document.getElementById("role_filter").value;
+
+        var url =
+          "{% url 'filtered_users' %}?search=" +
+          search +
+          (roleFilter ? "&role_filter=" + roleFilter : "");
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            updateTable(data.users);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function updateTable(users) {
+        var tableBody = document.getElementById("user-table-body");
+        tableBody.innerHTML = "";
+
+        users.forEach(function (user) {
+          var row =
+            "<tr>" +
+            "<td>" +
+            user.rol_id +
+            "_" +
+            user.id +
+            "</td>" +
+            "<td>" +
+            user.rol_description +
+            "</td>" +
+            "<td>" +
+            user.user_name +
+            "</td>" +
+            "<td>" +
+            user.user_lastname +
+            "</td>" +
+            "<td>" +
+            user.user_mail +
+            "</td>" +
+            "<td>" +
+            user.user_fono +
+            "</td>" +
+            "<td>" +
+            "<button class='delete-user-btn' data-user-id='" +
+            user.id +
+            "'>Eliminar</button>" +
+            "</td>" +
+            "</tr>";
+
+          tableBody.innerHTML += row;
+        });
+      }
+    </script>
+
+    <script>
+      function generatePDF() {
+        var search = document.getElementById("search").value;
+        var roleFilter = document.getElementById("role_filter").value;
+
+        // Construir la URL para la generación del PDF
+        var pdfUrl =
+          "{% url 'generate_pdf' %}?search=" +
+          search +
+          "&role_filter=" +
+          roleFilter;
+
+        // Abrir una nueva pestaña con el PDF
+        window.open(pdfUrl, "_blank");
+      }
+    </script>
 
     <!-- añadir usuario -->
 
@@ -141,7 +233,7 @@
       $(document).ready(function () {
         $(".delete-user-btn").on("click", function () {
           var userId = $(this).data("user-id");
-          var clickedButton = $(this); // Guardamos una referencia al botón clicado
+          var clickedButton = $(this);
 
           // Realizar una solicitud AJAX para eliminar el usuario de la base de datos
           $.ajax({
@@ -170,6 +262,5 @@
         });
       });
     </script>
-
   </tbody>
 </table>

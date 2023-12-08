@@ -28,6 +28,7 @@
         <div class="card-body">
           <p>Precio: ${{ servicio.ser_prec }}</p>
           <p>Duración: {{ servicio.ser_durac }}</p>
+          <button class="delete-service-btn" data-service-id="{{ servicio.ser_id }}">Eliminar</button>
         </div>
       </div>
     {% endfor %}
@@ -35,6 +36,7 @@
   
 
 <script>
+
   $(document).ready(function () {
     // Manejar el clic en el botón "Añadir Servicio"
     $("#add-service-btn").on("click", function () {
@@ -78,6 +80,52 @@
         },
         error: function () {
           alert("Error al añadir servicio");
+        },
+      });
+    });
+  });
+
+</script>
+
+<!-- Eliminar servicio -->
+<script>
+  $(document).ready(function () {
+    $(".delete-service-btn").on("click", function () {
+      console.log("Botón clicado");
+      var serId = $(this).data("service-id");
+      var clickedButton = $(this); 
+
+      $.ajax({
+        url: "{% url 'delete_service' %}",
+        method: "POST",
+        data: { ser_id: serId },
+        success: function (data) {
+          console.log(data);
+          // Mostrar la alerta con SweetAlert2
+          if (data.success) {
+            Swal.fire({
+              icon: "success",
+              title: "Servicio Eliminado",
+            });
+
+            // Eliminar la tarjeta del servicio
+            clickedButton.closest(".service-card").remove();
+          } else {
+            // Mostrar una alerta de error si la eliminación falla
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: data.message,
+            });
+          }
+        },
+        error: function () {
+          console.error("Error en la solicitud AJAX");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error al eliminar servicio",
+          });
         },
       });
     });

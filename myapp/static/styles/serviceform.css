@@ -1,8 +1,3 @@
-/* Estilos para el formulario de añadir servicio */
-/* Agrega estos estilos a tu hoja de estilo CSS */
-
-
-
 
 .add-service-button {
     background-color: #4caf50; /* Color de fondo verde */
@@ -50,7 +45,7 @@
   
   #add-service-submit {
     padding: 10px;
-    background-color: #3498db;
+    background-color: #45a049;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -59,7 +54,7 @@
   }
   
   #add-service-submit:hover {
-    background-color: #2980b9;
+    background-color: #45a049;
   }
   
   /* Estilos para las cards de servicios */
@@ -94,4 +89,3 @@
   .service-card button:hover {
     background-color: #2980b9;
   }
-  

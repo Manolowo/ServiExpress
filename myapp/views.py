@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
+
+from myapp.utils import render_to_pdf
 
 from .models import UserProfile
 from .models import Servicio
@@ -183,15 +186,102 @@ def adm_users(request):
     users = UserProfile.objects.all()
     return render(request, 'admin/adm_users.html', {'users': users})
 
+def filtered_users(request):
+    filter_value = request.GET.get('search', '')
+    role_filter = request.GET.get('role_filter', '')
+
+    # Filtrar los usuarios según el valor de búsqueda
+    users = UserProfile.objects.filter(Q(user_name__icontains=filter_value) | Q(user_lastname__icontains=filter_value))
+
+    # Aplicar filtro adicional por rol si se proporciona
+    if role_filter:
+        users = users.filter(rol__rol_description=role_filter)
+
+    user_data = []
+    for user in users:
+        user_data.append({
+            'id': user.user_id,
+            'rol_id': user.rol.rol_id,
+            'rol_description': user.rol.rol_description,
+            'user_name': user.user_name,
+            'user_lastname': user.user_lastname,
+            'user_mail': user.user_mail,
+            'user_fono': user.user_fono,
+        })
+
+    return JsonResponse({'users': user_data})
+
+def generate_pdf(request):
+    filter_value = request.GET.get('search', '')
+    role_filter = request.GET.get('role_filter', '')
+
+    # Filtrar los usuarios según el valor de búsqueda
+    users = UserProfile.objects.filter(user_name__icontains=filter_value)
+
+    # Aplicar filtro adicional por rol si se proporciona
+    if role_filter:
+        users = users.filter(rol__rol_description=role_filter)
+
+    user_data = {'users': users}
+
+    # Utiliza la plantilla adm_users.html para generar el PDF
+    template_path = 'admin/adm_users.html'  # Ajusta la ruta según tu estructura de directorios
+    pdf = render_to_pdf(template_path, user_data)
+
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename="usuarios.pdf"'
+        return response
+
+    return HttpResponse("Error al generar el PDF", status=400)
+
 def adm_atenciones(request):
     users = UserProfile.objects.all()
     atenciones = Atencion.objects.all()
-    vehiculo = Vehiculo.objects.all()
-    return render(request, 'admin/adm_atenciones.html', {'vehiculo': vehiculo, 'users': users , 'atenciones': atenciones})
+    return render(request, 'admin/adm_atenciones.html', {'users': users , 'atenciones': atenciones})
 
 def adm_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'admin/adm_servicios.html', {'servicios': servicios})
+
+@csrf_exempt
+def add_service(request):
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        ser_desc = request.POST.get('ser_desc')
+        ser_prec = request.POST.get('ser_prec')
+        ser_durac = request.POST.get('ser_durac')
+
+        # Crear y guardar el nuevo servicio
+        servicio = Servicio(
+            ser_desc=ser_desc,
+            ser_prec=ser_prec,
+            ser_durac=ser_durac
+        )
+        servicio.save()
+
+        servicio_data = {
+            'ser_id': servicio.ser_id,
+            'ser_desc': servicio.ser_desc,
+            'ser_prec': servicio.ser_prec,
+            'ser_durac': servicio.ser_durac,
+        }
+        return JsonResponse(servicio_data)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def delete_service(request):
+    if request.method == 'POST':
+        ser_id = request.POST.get('ser_id')
+        try:
+            servicio = Servicio.objects.get(ser_id=ser_id)
+            servicio.delete()
+            return JsonResponse({'success': True, 'message': 'Servicio eliminado correctamente'})
+        except Servicio.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'El servicio no existe'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido'})
 
 def adm_vehiculos(request):
     # Obtener todos los vehículos
@@ -230,35 +320,45 @@ def adm_vehiculos(request):
 
     return render(request, 'admin/adm_vehiculos.html', {'vehiculos': vehiculos})
 
-@csrf_exempt
-def add_service(request):
-    if request.method == 'POST':
-        # Obtener datos del formulario
-        ser_desc = request.POST.get('ser_desc')
-        ser_prec = request.POST.get('ser_prec')
-        ser_durac = request.POST.get('ser_durac')
-
-        # Crear y guardar el nuevo servicio
-        servicio = Servicio(
-            ser_desc=ser_desc,
-            ser_prec=ser_prec,
-            ser_durac=ser_durac
-        )
-        servicio.save()
-
-        servicio_data = {
-            'ser_id': servicio.ser_id,
-            'ser_desc': servicio.ser_desc,
-            'ser_prec': servicio.ser_prec,
-            'ser_durac': servicio.ser_durac,
-        }
-        return JsonResponse(servicio_data)
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-    
 def adm_proveedores(request):
     proveedores = Proveedor.objects.all()
     return render(request, 'admin/adm_proveedores.html', {'proveedores': proveedores})
+
+@csrf_exempt
+def add_proveedor(request):
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        pro_nom = request.POST.get('pro_nom')
+        pro_mail = request.POST.get('pro_mail')
+
+        # Crear y guardar el nuevo proveedor
+        proveedor = Proveedor(
+            pro_nom=pro_nom,
+            pro_mail=pro_mail
+        )
+        proveedor.save()
+
+        proveedor_data = {
+            'pro_id': proveedor.pro_id,
+            'pro_nom': proveedor.pro_nom,
+            'pro_mail': proveedor.pro_mail,
+        }
+        return JsonResponse(proveedor_data)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    
+@csrf_exempt
+def delete_proveedor(request):
+    if request.method == 'POST':
+        pro_id = request.POST.get('pro_id')
+        try:
+            proveedor = Proveedor.objects.get(pro_id=pro_id)
+            proveedor.delete()
+            return JsonResponse({'success': True, 'message': 'Proveedor eliminado correctamente'})
+        except Proveedor.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'El proveedor no existe'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido'})
 
 @csrf_exempt  # Esto es para desactivar la protección CSRF temporalmente
 def add_user(request):

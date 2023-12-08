@@ -20,13 +20,23 @@ urlpatterns=[
     path('emp_home/', views.emp_home, name='emp_home'),
     
     path('adm_home/', views.adm_home, name='adm_home'),
+
     path('adm_atenciones/', views.adm_atenciones, name='adm_atenciones'),
+    
     path('adm_servicios/', views.adm_servicios, name='adm_servicios'),
     path('add_service/', views.add_service, name='add_service'),
+    path('delete_service/', views.delete_service, name='delete_service'),
+
     path('adm_proveedores/', views.adm_proveedores, name='adm_proveedores'),
+    path('add_proveedor/', views.add_proveedor, name='add_proveedor'),
+    path('delete_proveedor/', views.delete_proveedor, name='delete_proveedor'),
+
     path('adm_users/', views.adm_users, name='adm_users'),
+    path('filtered_users/', views.filtered_users, name='filtered_users'),
+    path('generate_pdf/', views.generate_pdf, name='generate_pdf'),
     path('add_user/', views.add_user, name='add_user'),
     path('delete_user/', views.delete_user, name='delete_user'),
+
     path('adm_vehiculos', views.adm_vehiculos, name='adm_vehiculos'),
 
 ]
