@@ -14,6 +14,9 @@ from .models import Servicio
 from .models import Proveedor
 from .models import Vehiculo
 from .models import Atencion
+from .models import Pedido
+from .models import Repuestos
+from .models import Inventario
 
 
 from myapp.carrito import Carrito
@@ -45,8 +48,8 @@ def login_view(request):
             # Redireccionar según el rol del usuario
             if rol_description == 'Cliente':
                 return redirect('cli_home')
-            elif rol_description == 'Empleado':
-                return redirect('emp_home')
+            elif rol_description == 'Personal':
+                return redirect('per_home')
             elif rol_description == 'Administrador':
                 return redirect('adm_home')
             else:
@@ -176,7 +179,7 @@ def cli_atencion(request):
     atencion = Atencion.objects.filter(userProfile=user_profile)
     return render(request, 'cliente/cli_atencion.html', {'atencion': atencion})
 
-def emp_home(request):
+def per_home(request):
     return render(request, 'personal/per_home.html')
 
 def adm_home(request):
@@ -407,6 +410,114 @@ def delete_user(request):
             return JsonResponse({'success': False, 'message': 'El usuario no existe'})
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido'})
+
+def adm_pedidos(request):
+    pedidos = Pedido.objects.all()
+    repuestos = Repuestos.objects.all()
+    atenciones = Atencion.objects.all()
+    users = UserProfile.objects.all()
+    proveedores = Proveedor.objects.all()
+    return render(request, 'admin/adm_pedidos.html', {'proveedores': proveedores, 'pedidos': pedidos,'repuestos': repuestos, 'atenciones': atenciones , 'users': users})
+
+@csrf_exempt
+def add_pedido(request):
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        atencion_id = request.POST.get('atencion')
+        proveedor_id = request.POST.get('proveedor')
+        # Crear el pedido con proveedor
+        pedido = Pedido.objects.create(atencion_id=atencion_id, proveedor_id=proveedor_id)
+
+        # Obtener datos de repuestos
+        rep_nom = request.POST.getlist('rep-nom')
+        rep_marc = request.POST.getlist('rep-marc')
+        rep_anno = request.POST.getlist('rep-anno')
+        rep_cant = request.POST.getlist('rep-cant')
+
+        # Crear repuestos asociados al pedido
+        for i in range(len(rep_nom)):
+            Repuestos.objects.create(
+                rep_nom=rep_nom[i],
+                rep_marc=rep_marc[i],
+                rep_anno=rep_anno[i],
+                rep_cant=rep_cant[i],
+                pedido=pedido
+            )
+
+        pedido_data = {
+            'ped_id': pedido.ped_id,
+            'atencion_id': pedido.atencion.ate_id,
+            'ped_est': pedido.ped_est,
+            'ped_fecha': pedido.ped_fecha,
+        }
+        
+        return redirect('adm_home')
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    
+def adm_inv(request):
+    inventario = Inventario.objects.all()
+    return render(request, 'admin/adm_inv.html', {'inventario': inventario})
+
+from django.http import JsonResponse
+from django.db.models import Q
+
+def filtered_inventario(request):
+    filter_value = request.GET.get('search', '')
+    marca_filter = request.GET.get('marca_filter', '')
+    anno_filter = request.GET.get('anno_filter', '')
+
+    # Construir la expresión de filtrado
+    filter_expr = Q()
+
+    if filter_value:
+        filter_expr &= Q(rep_nom__icontains=filter_value)
+
+    if marca_filter:
+        filter_expr &= Q(rep_marc__icontains=marca_filter)
+
+    if anno_filter.isdigit():
+        filter_expr &= Q(rep_anno=int(anno_filter))
+
+    # Filtrar el inventario según la expresión construida
+    inventario = Inventario.objects.filter(filter_expr)
+
+    inventario_data = []
+    for item in inventario:
+        inventario_data.append({
+            'rep_nom': item.rep_nom,
+            'rep_marc': item.rep_marc,
+            'rep_anno': item.rep_anno,
+            'inv_cantTotal': item.inv_cantTotal,
+        })
+
+    return JsonResponse({'inventario': inventario_data})
+
+def generate_pdf_inventario(request):
+    filter_value = request.GET.get('search', '')
+    marca_filter = request.GET.get('marca_filter', '')
+    anno_filter = request.GET.get('anno_filter', '')
+
+    # Filtrar el inventario según el valor de búsqueda
+    inventario = Inventario.objects.filter(
+        rep_nom__icontains=filter_value,
+        rep_marc__icontains=marca_filter,
+        rep_anno__icontains=anno_filter
+    )
+
+    inventario_data = {'inventario': inventario}
+
+    template_path = 'admin/adm_inv.html'  
+    pdf = render_to_pdf(template_path, inventario_data)
+
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename="inventario.pdf"'
+        return response
+
+    return HttpResponse("Error al generar el PDF", status=400)
+
+
 
 """_____________________ Carrito _____________________"""
 

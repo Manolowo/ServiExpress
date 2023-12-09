@@ -1,0 +1,64 @@
+ /* Estilo para el botón de solicitar pedido */
+  #add-pedido-btn {
+    background-color: #4caf50; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 10px; /* Espaciado interno del botón */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cursor de apuntar al pasar el ratón */
+  }
+
+  /* Estilo para el formulario de solicitud de pedido */
+  #add-pedido-form-container {
+    display: none; /* Inicialmente oculto */
+    margin-top: 20px; /* Espaciado superior */
+  }
+
+  /* Estilo para el formulario dentro del contenedor */
+  #add-pedido-form {
+    background-color: #f2f2f2; /* Color de fondo gris claro */
+    padding: 20px; /* Espaciado interno del formulario */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+
+  /* Estilo para las etiquetas y campos del formulario */
+  #pedido-form label,
+  #repuestos-form label {
+    display: block; /* Mostrar en una línea separada */
+    margin-bottom: 10px; /* Espaciado inferior */
+  }
+
+  #pedido-form select,
+  #repuestos-form input {
+    width: 100%; /* Ancho completo del contenedor */
+    padding: 8px; /* Espaciado interno */
+    margin-bottom: 15px; /* Espaciado inferior */
+    box-sizing: border-box; /* Incluir bordes y relleno en el ancho y alto */
+  }
+
+  /* Estilo para el botón de guardar */
+  #guardar-btn {
+    background-color: #008CBA; /* Color de fondo azul */
+    color: white; /* Color del texto blanco */
+    padding: 10px; /* Espaciado interno del botón */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cursor de apuntar al pasar el ratón */
+  }
+
+  /* Estilo para la tabla de pedidos */
+  .pedido-table {
+    width: 100%; /* Ancho completo del contenedor */
+    border-collapse: collapse; /* Colapsar los bordes de la tabla */
+    margin-top: 20px; /* Espaciado superior */
+  }
+
+  .pedido-table th, .pedido-table td {
+    border: 1px solid #ddd; /* Borde gris claro */
+    padding: 8px; /* Espaciado interno */
+    text-align: left; /* Alineación del texto a la izquierda */
+  }
+
+  .pedido-table th {
+    background-color: rgb(18, 18, 122);
+    color: white; /* Color del texto blanco */
+  }
+

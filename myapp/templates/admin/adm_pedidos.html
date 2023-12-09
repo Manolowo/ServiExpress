@@ -1,0 +1,185 @@
+<h2>Administración de Pedidos</h2>
+
+<button id="add-pedido-btn" class="add-pedido-button">
+  + Solicitar pedido
+</button>
+
+<div
+  id="add-pedido-form-container"
+  class="pedido-form-container"
+  style="display: none"
+>
+  <form
+    id="add-pedido-form"
+    class="pedido-form"
+    action="{% url 'add_pedido' %}"
+    method="post"
+  >
+    {% csrf_token %}
+
+    <div id="pedido-form">
+      <label for="atencion">Atención:</label>
+      <select name="atencion" id="atencion" required>
+        {% for atencion in atenciones %}
+        <option value="{{ atencion.ate_id }}">
+          {{ atencion.ate_id }} - {{ atencion.userProfile.user_name }} {{atencion.userProfile.user_lastname }}
+        </option>
+        {% endfor %}
+      </select>
+      <label for="proveedor">Proveedor:</label>
+      <select name="proveedor" id="proveedor" required>
+        {% for proveedor in proveedores %}
+        <option value="{{ proveedor.pro_id }}">
+          {{ proveedor.pro_id }} - {{ proveedor.pro_nom }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="repuestos-form">
+      <div>
+        <!-- Campos del repuesto -->
+        <label for="rep-nom">Nombre Repuesto:</label>
+        <input type="text" id="rep-nom" name="rep-nom" required />
+
+        <label for="rep-marc">Marca Repuesto:</label>
+        <input type="text" id="rep-marc" name="rep-marc" required />
+
+        <label for="rep-anno">Año Repuesto:</label>
+        <input
+          type="number"
+          id="rep-anno"
+          name="rep-anno"
+          maxlength="4"
+          required
+        />
+
+        <label for="rep-cant">Cantidad Repuesto:</label>
+        <input type="number" id="rep-cant" name="rep-cant" required />
+      </div>
+    </div>
+    <button type="submit" id="guardar-btn">Guardar</button>
+  </form>
+</div>
+
+<table class="pedido-table">
+  <thead>
+    <tr>
+      <th>ID del Pedido</th>
+      <th>Atención Asociada</th>
+      <th>Proveedor</th>
+      <th>Estado</th>
+      <th>Fecha del Pedido</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pedido in pedidos %}
+    <tr>
+      <td>{{ pedido.ped_id }}</td>
+      <td>
+        {{ pedido.atencion.ate_id }} - {{pedido.atencion.userProfile.user_name}} {{pedido.atencion.userProfile.user_lastname }}
+      </td>
+      <td>{{ pedido.proveedor.pro_nom }}</td>
+      <td>{{ pedido.ped_est }}</td>
+      <td>{{ pedido.ped_fecha }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el botón "Solicitar pedido"
+    $("#add-pedido-btn").on("click", function () {
+      $("#add-pedido-form-container").toggle();
+    });
+
+    let repuestos = [];
+
+    $("#agregar-repuesto-btn").on("click", function () {
+      // Resto del script para agregar repuestos...
+    });
+
+    $("#guardar-btn").on("click", function () {
+      // Resto del script para guardar el formulario...
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addPedidoBtn = document.getElementById('add-pedido-btn');
+    const addPedidoFormContainer = document.getElementById('add-pedido-form-container');
+    const repuestosForm = document.getElementById('repuestos-form');
+    const agregarRepuestoBtn = document.getElementById('agregar-repuesto-btn');
+    const listaRepuestos = document.getElementById('lista-repuestos');
+    const guardarBtn = document.getElementById('guardar-btn');
+
+    let repuestos = [];
+
+    agregarRepuestoBtn.addEventListener('click', function () {
+      const repuesto = {
+        'rep-nom': document.getElementById('rep-nom').value,
+        'rep-marc': document.getElementById('rep-marc').value,
+        'rep-anno': document.getElementById('rep-anno').value,
+        'rep-cant': document.getElementById('rep-cant').value,
+      };
+
+      repuestos.push(repuesto);
+      actualizarListaRepuestos();
+      limpiarCamposRepuesto();
+    });
+
+    const actualizarListaRepuestos = () => {
+      listaRepuestos.innerHTML = '';
+      repuestos.forEach((repuesto, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${repuesto['rep-nom']} - ${repuesto['rep-marc']} - ${repuesto['rep-anno']} - Cantidad: ${repuesto['rep-cant']}`;
+        listaRepuestos.appendChild(li);
+      });
+    };
+
+    const limpiarCamposRepuesto = () => {
+      document.getElementById('rep-nom').value = '';
+      document.getElementById('rep-marc').value = '';
+      document.getElementById('rep-anno').value = '';
+      document.getElementById('rep-cant').value = '';
+    };
+
+    guardarBtn.addEventListener('click', function () {
+      // Construir objeto de datos con la información del pedido y repuestos
+      const data = new FormData(document.getElementById('add-pedido-form'));
+
+      // Obtener el valor del campo de proveedor y agregarlo al formulario
+      const proveedorSelect = document.getElementById('proveedor');
+      const proveedorValue = proveedorSelect.options[proveedorSelect.selectedIndex].value;
+      data.append('proveedor', proveedorValue);
+
+      repuestos.forEach((repuesto, index) => {
+        for (const key in repuesto) {
+          data.append(`${key}-${index}`, repuesto[key]);
+        }
+      });
+
+      // Simular una solicitud AJAX al servidor
+      // Reemplaza esto con tu lógica de solicitud AJAX real
+      fetch("{% url 'add_pedido' %}", {
+        method: 'POST',
+        body: data,
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Datos recibidos del servidor:', data);
+          // Puedes hacer algo con la respuesta del servidor aquí
+        })
+        .catch(error => console.error('Error:', error));
+
+      // Reiniciar repuestos y formulario después de enviar
+      repuestos = [];
+      actualizarListaRepuestos();
+      limpiarCamposRepuesto();
+      addPedidoFormContainer.style.display = 'none';
+    });
+  });
+</script>
+

@@ -1,0 +1,112 @@
+<h2>Administración de Inventario</h2>
+
+<form id="inventario-filter-form">
+  <input
+    type="text"
+    id="search"
+    name="search"
+    placeholder="Buscar por nombre"
+  />
+  <input
+    type="text"
+    id="marca_filter"
+    name="marca_filter"
+    placeholder="Buscar por marca"
+  />
+  <input
+    type="number"
+    id="anno_filter"
+    name="anno_filter"
+    placeholder="Filtrar por año"
+  />
+  <button id="filtrar" type="button" onclick="filterInventario()">Filtrar</button>
+  <button type="button" onclick="generatePDF()">Generar PDF</button> 
+</form>
+
+<table class="inventario-table">
+  <thead>
+      <tr>
+          <th class="repuesto-nombre">Nombre del Repuesto</th>
+          <th class="repuesto-marca">Marca</th>
+          <th class="repuesto-anno">Año</th>
+          <th class="cantidad-total">Cantidad Total</th>
+      </tr>
+  </thead>
+  <tbody id="inventario-table-body">
+      {% for inventario in inventario %}
+          <tr>
+              <td class="repuesto-nombre">{{ inventario.rep_nom }}</td>
+              <td class="repuesto-marca">{{ inventario.rep_marc }}</td>
+              <td class="repuesto-anno">{{ inventario.rep_anno }}</td>
+              <td class="cantidad-total">{{ inventario.inv_cantTotal }}</td>
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+
+
+<script>
+  function filterInventario() {
+      var search = document.getElementById("search").value;
+      var marcaFilter = document.getElementById("marca_filter").value;
+      var annoFilter = document.getElementById("anno_filter").value;
+
+      var url =
+    "{% url 'filtered_inventario' %}?search=" +
+    search +
+    (marcaFilter ? "&marca_filter=" + marcaFilter : "") +
+    (annoFilter ? "&anno_filter=" + annoFilter : "");
+
+      fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+              updateTable(data.inventario);
+          })
+          .catch((error) => console.error("Error:", error));
+  }
+
+  function updateTable(inventario) {
+      var tableBody = document.getElementById("inventario-table-body");
+      tableBody.innerHTML = "";
+
+      inventario.forEach(function (item) {
+          var row =
+              "<tr>" +
+              "<td>" +
+              item.rep_nom +
+              "</td>" +
+              "<td>" +
+              item.rep_marc +
+              "</td>" +
+              "<td>" +
+              item.rep_anno +
+              "</td>" +
+              "<td>" +
+              item.inv_cantTotal +
+              "</td>" +
+              "</tr>";
+          tableBody.innerHTML += row;
+      });
+  }
+</script>
+
+<script>
+  function generatePDF() {
+    var search = document.getElementById("search").value;
+    var marcaFilter = document.getElementById("marca_filter").value;
+    var annoFilter = document.getElementById("anno_filter").value;
+
+    // Construir la URL para la generación del PDF
+    var pdfUrl =
+      "{% url 'generate_pdf_inventario' %}?search=" +
+      search +
+      "&marca_filter=" +
+      marcaFilter +
+      "&anno_filter=" +
+      annoFilter;
+
+    // Abrir una nueva pestaña con el PDF
+    window.open(pdfUrl, "_blank");
+  }
+</script>

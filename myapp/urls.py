@@ -17,12 +17,11 @@ urlpatterns=[
     path('restar/<int:ser_id>/', restarServicio, name="Sub"),
     path('limpiar/', limpiarCarrito, name="CLS"),
 
-    path('emp_home/', views.emp_home, name='emp_home'),
+    path('per_home/', views.per_home, name='per_home'),
     
     path('adm_home/', views.adm_home, name='adm_home'),
-
     path('adm_atenciones/', views.adm_atenciones, name='adm_atenciones'),
-    
+
     path('adm_servicios/', views.adm_servicios, name='adm_servicios'),
     path('add_service/', views.add_service, name='add_service'),
     path('delete_service/', views.delete_service, name='delete_service'),
@@ -30,6 +29,13 @@ urlpatterns=[
     path('adm_proveedores/', views.adm_proveedores, name='adm_proveedores'),
     path('add_proveedor/', views.add_proveedor, name='add_proveedor'),
     path('delete_proveedor/', views.delete_proveedor, name='delete_proveedor'),
+
+    path('adm_pedidos/', views.adm_pedidos, name='adm_pedidos'),
+    path('add_pedido/', views.add_pedido, name='add_pedido'),
+    
+    path('adm_inv', views.adm_inv, name='adm_inv'),
+    path('filtered_inventario', views.filtered_inventario, name='filtered_inventario'),
+    path('generate_pdf_inventario', views.generate_pdf_inventario, name='generate_pdf_inventario'),
 
     path('adm_users/', views.adm_users, name='adm_users'),
     path('filtered_users/', views.filtered_users, name='filtered_users'),

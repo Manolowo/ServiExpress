@@ -90,19 +90,20 @@ class Pedido(models.Model):
     ped_est = models.CharField(max_length=12, choices= estados, default='Solicitado')
     ped_fecha = models.DateTimeField(auto_now_add=True, null=False)
     atencion = models.ForeignKey(Atencion, on_delete=models.SET_NULL, null=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.SET_NULL, null=True)
 
 class Repuestos(models.Model):
     rep_id = models.AutoField(primary_key=True)
     rep_nom = models.CharField(max_length=50, null=False)
     rep_marc = models.CharField(max_length=25, default='Generica')
-    rep_anno = models.CharField(max_length=4, null=False)
+    rep_anno = models.IntegerField(null=False)
     rep_cant= models.IntegerField(default= 1, null=False)
     pedido = models.ForeignKey(Pedido, on_delete=models.SET_NULL, null=True)
 
 class Inventario(models.Model):
     rep_nom = models.CharField(max_length=50)
     rep_marc = models.CharField(max_length=25)
-    rep_anno = models.DateField()
+    rep_anno = models.IntegerField(null=False)
     inv_cantTotal = models.IntegerField(default=0)
 
 @receiver(post_save, sender=Repuestos)
@@ -113,7 +114,7 @@ def actualizar_inventario(sender, instance, created, **kwargs):
             rep_marc=instance.rep_marc,
             rep_anno=instance.rep_anno,
         )
-        inventario.inv_cantTotal += instance.rep_cant
+        inventario.inv_cantTotal += int(instance.rep_cant)
         inventario.save()
     else:
         inventario = Inventario.objects.get(
@@ -121,5 +122,5 @@ def actualizar_inventario(sender, instance, created, **kwargs):
             rep_marc=instance.rep_marc,
             rep_anno=instance.rep_anno,
         )
-        inventario.inv_cantTotal += instance.rep_cant
+        inventario.inv_cantTotal += int(instance.rep_cant)
         inventario.save()

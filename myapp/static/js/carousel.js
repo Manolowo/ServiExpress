@@ -1,7 +1,7 @@
 let currentSlide = 0;
 
 function showSlide(index) {
-  const carousel = document.querySelector('.carousel');
+  const carousel = document.getElementById('carousel');
   const indicators = document.querySelectorAll('.indicator');
 
   if (index < 0) {

@@ -15,8 +15,9 @@
   <link rel="stylesheet" href="{% static 'styles/adm_atenciones.css' %}">
   <link rel="stylesheet" href="{% static 'styles/ate_modificar.css' %}">
   <link rel="stylesheet" href="{% static 'styles/adm_filtrar.css' %}">
-
+  <link rel="stylesheet" href="{% static 'styles/adm_pedidos.css' %}">
   <link rel="stylesheet" href="{% static 'styles/adm_vehiculos.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_inv.css' %}">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -38,8 +39,8 @@
             <li><a href="#" id="atenciones-link">Atenciones</a></li>
             <li><a href="#" id="servicios-link">Servicios</a></li>
             <li><a href="#" id="proveedores-link">Proveedores</a></li>
-            <li><a href="#">Pedidos</a></li>
-            <li><a href="#">Inventario</a></li>
+            <li><a href="#" id="pedidos-link">Pedidos</a></li>
+            <li><a href="#" id="inventario-link">Inventario</a></li>
             <li><a href="#" id="usuarios-link">Usuarios</a></li>
             <li><a href="#" id="vehiculos-link">Vehiculos</a></li>
             <li><a href="/">Cerrar Sesión</a></li>
@@ -60,6 +61,12 @@
       <!-- Aquí se cargará el contenido dinámico -->
     </div>
     <div id="container-adm_proveedores" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+    <div id="container-adm_pedidos" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+    <div id="container-adm_inv" class="dynamic-content-container">
       <!-- Aquí se cargará el contenido dinámico -->
     </div>
     <div id="container-adm_users" class="dynamic-content-container">
@@ -100,6 +107,10 @@
             $("#limpiarPantallaProveedores").hide();
             $("#container-adm_vehiculos").html(''); 
             $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
           },
           error: function () {
             alert("Error al cargar el contenido de Atenciones");
@@ -138,6 +149,10 @@
             $("#limpiarPantallaProveedores").hide();
             $("#container-adm_vehiculos").html(''); 
             $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
           },
           error: function () {
             alert("Error al cargar el contenido de Servicios");
@@ -177,6 +192,10 @@
             $("#limpiarPantallaUsuarios").hide(); // Oculta el botón de limpiar pantalla de Usuarios
             $("#container-adm_vehiculos").html(''); 
             $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
           },
           error: function () {
             alert("Error al cargar el contenido de Proveedores");
@@ -186,6 +205,90 @@
   
       // Manejar el clic en el botón de limpiar pantalla de Proveedores
       $("#limpiarPantallaProveedores").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- pedidos -->
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de pedidos
+      $("#pedidos-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_pedidos.html
+        $.ajax({
+          url: "{% url 'adm_pedidos' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_pedidos").html(data).show();
+            $("#limpiarPantallaPedidos").show();
+            $("#container-adm_atenciones").html(''); 
+            $("#limpiarPantallaAtenciones").hide(); 
+            $("#container-adm_servicios").html(''); // Oculta el contenido de Servicios
+            $("#limpiarPantallaServicios").hide(); // Oculta el botón de limpiar pantalla de Servicios
+            $("#container-adm_users").html(''); // Oculta el contenido de Usuarios
+            $("#limpiarPantallaUsuarios").hide(); // Oculta el botón de limpiar pantalla de Usuarios
+            $("#container-adm_vehiculos").html(''); 
+            $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Pedidos");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Proveedores
+      $("#limpiarPantallaPedidos").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- inventario -->
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de pedidos
+      $("#inventario-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_inv.html
+        $.ajax({
+          url: "{% url 'adm_inv' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_inv").html(data).show();
+            $("#limpiarPantallaInventario").show();
+            $("#container-adm_atenciones").html(''); 
+            $("#limpiarPantallaAtenciones").hide(); 
+            $("#container-adm_servicios").html(''); // Oculta el contenido de Servicios
+            $("#limpiarPantallaServicios").hide(); // Oculta el botón de limpiar pantalla de Servicios
+            $("#container-adm_users").html(''); // Oculta el contenido de Usuarios
+            $("#limpiarPantallaUsuarios").hide(); // Oculta el botón de limpiar pantalla de Usuarios
+            $("#container-adm_vehiculos").html(''); 
+            $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Inventario");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Proveedores
+      $("#limpiarPantallaInventario").on("click", function () {
         $(".adm-container").hide();
         $(this).hide();
       });
@@ -215,6 +318,10 @@
             $("#limpiarPantallaProveedores").hide();
             $("#container-adm_vehiculos").html(''); 
             $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
           },
           error: function () {
             alert("Error al cargar el contenido de Usuarios");
@@ -254,6 +361,10 @@
           $("#limpiarPantallaProveedores").hide();
           $("#container-adm_atenciones").html(''); 
           $("#limpiarPantallaAtenciones").hide();
+          $("#container-adm_pedidos").html(''); 
+          $("#limpiarPantallaPedidos").hide();
+          $("#container-adm_inv").html(''); 
+          $("#limpiarPantallaInventario").hide();
         },
         error: function () {
           alert("Error al cargar el contenido de Vehículos");
