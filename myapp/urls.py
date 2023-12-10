@@ -18,6 +18,7 @@ urlpatterns=[
     path('limpiar/', limpiarCarrito, name="CLS"),
 
     path('per_home/', views.per_home, name='per_home'),
+    path('per_proveedores/', views.per_proveedores, name='per_proveedores'),
     
     path('adm_home/', views.adm_home, name='adm_home'),
     path('adm_atenciones/', views.adm_atenciones, name='adm_atenciones'),

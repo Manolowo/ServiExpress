@@ -1,1 +1,279 @@
-<a>per</a>
+<!-- index.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ServiExpress</title>
+    <!-- .css -->
+  <link rel="stylesheet" href="{% static 'styles/nav.css' %}">
+  
+  <link rel="stylesheet" href="{% static 'styles/serviceform.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/usersTable.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_atenciones.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/ate_modificar.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_filtrar.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_pedidos.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_vehiculos.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/adm_inv.css' %}">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+  
+  <header>
+    <nav>
+      <div class="navbar">
+        <div class="logo">
+          <a href="/per_home">
+            <img src="{% static 'LogoPokebola.png' %}" alt="Logo">
+          </a>
+        </div>
+
+        <div class="nav-items">
+          <ul>
+            <li><a href="#" id="atenciones-link">Atenciones</a></li>
+            <li><a href="#" id="proveedores-link">Proveedores</a></li>
+            <li><a href="#" id="pedidos-link">Pedidos</a></li>
+            <li><a href="#" id="inventario-link">Inventario</a></li>
+            <li><a href="#" id="vehiculos-link">Vehiculos</a></li>
+            <li><a href="/">Cerrar Sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="content" style="margin-top: 100px;">
+    <!-- Contenido adicional de tu página de inicio -->
+    <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
+
+    <div id="container-adm_atenciones" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+    <div id="container-adm_pedidos" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+    <div id="container-adm_inv" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+    <div id="container-adm_vehiculos" class="dynamic-content-container">
+      <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+    <div id="container-per_proveedores" class="dynamic-content-container">
+        <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+  </div>
+
+
+  <!-- scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{% static 'js/carousel.js' %}"></script>
+
+  <!-- atenciones -->
+
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de Servicios
+      $("#atenciones-link").on("click", function (e) {
+        e.preventDefault();
+  
+        $.ajax({
+          url: "{% url 'adm_atenciones' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_atenciones").html(data).show();
+
+            $("#container-adm_servicios").html(''); 
+            $("#limpiarPantallaServicios").hide();
+            $("#container-adm_vehiculos").html(''); 
+            $("#limpiarPantallaVehiculos").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
+            $("#container-per_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Atenciones");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Servicios
+      $("#limpiarPantallaServicios").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- pedidos -->
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de pedidos
+      $("#pedidos-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_pedidos.html
+        $.ajax({
+          url: "{% url 'adm_pedidos' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_pedidos").html(data).show();
+            $("#limpiarPantallaPedidos").show();
+            $("#container-adm_atenciones").html(''); 
+            $("#limpiarPantallaAtenciones").hide(); 
+            $("#container-adm_vehiculos").html(''); 
+            $("#limpiarPantallaVehiculos").hide();
+            $("#container-per_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Pedidos");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Proveedores
+      $("#limpiarPantallaPedidos").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+  <!-- inventario -->
+  <script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de pedidos
+      $("#inventario-link").on("click", function (e) {
+        e.preventDefault();
+  
+        // Realizar una solicitud AJAX para obtener el contenido de adm_inv.html
+        $.ajax({
+          url: "{% url 'adm_inv' %}",
+          method: "GET",
+          success: function (data) {
+            $(".adm-container").hide();
+            $("#container-adm_inv").html(data).show();
+            $("#limpiarPantallaInventario").show();
+            $("#container-adm_atenciones").html(''); 
+            $("#limpiarPantallaAtenciones").hide(); 
+            $("#container-adm_vehiculos").html(''); 
+            $("#limpiarPantallaVehiculos").hide();
+            $("#container-per_proveedores").html(''); 
+            $("#limpiarPantallaProveedores").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Inventario");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Proveedores
+      $("#limpiarPantallaInventario").on("click", function () {
+        $(".adm-container").hide();
+        $(this).hide();
+      });
+    });
+  </script>
+
+<!-- vehiculos -->
+
+<script>
+  $(document).ready(function () {
+    // Manejar el clic en el enlace de Vehículos
+    $("#vehiculos-link").on("click", function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        url: "{% url 'adm_vehiculos' %}",
+        method: "GET",
+        success: function (data) {
+          $(".adm-container").hide();
+          $("#container-adm_vehiculos").html(data).show();
+
+          // Ocultar otros contenedores y botones de limpiar pantalla
+          $("#container-per_proveedores").html(''); 
+          $("#limpiarPantallaProveedores").hide();
+          $("#container-adm_atenciones").html(''); 
+          $("#limpiarPantallaAtenciones").hide();
+          $("#container-adm_pedidos").html(''); 
+          $("#limpiarPantallaPedidos").hide();
+          $("#container-adm_inv").html(''); 
+          $("#limpiarPantallaInventario").hide();
+        },
+        error: function () {
+          alert("Error al cargar el contenido de Vehículos");
+        },
+      });
+    });
+
+    // Manejar el clic en el botón de limpiar pantalla de Vehículos
+    $("#limpiarPantallaVehiculos").on("click", function () {
+      $(".adm-container").hide();
+      $(this).hide();
+    });
+  });
+
+</script>
+
+<!-- proveedores -->
+
+<script>
+    $(document).ready(function () {
+      // Manejar el clic en el enlace de proveedores
+      $("#proveedores-link").on("click", function (e) {
+        e.preventDefault();
+  
+        $.ajax({
+          url: "{% url 'per_proveedores' %}",
+          method: "GET",
+          success: function (data) {
+            $(".per-container").hide();
+            $("#container-per_proveedores").html(data).show();
+  
+            // Ocultar otros contenedores y botones de limpiar pantalla
+            $("#container-adm_atenciones").html(''); 
+            $("#limpiarPantallaAtenciones").hide();
+            $("#container-adm_pedidos").html(''); 
+            $("#limpiarPantallaPedidos").hide();
+            $("#container-adm_inv").html(''); 
+            $("#limpiarPantallaInventario").hide();
+          },
+          error: function () {
+            alert("Error al cargar el contenido de Proveedores");
+          },
+        });
+      });
+  
+      // Manejar el clic en el botón de limpiar pantalla de Vehículos
+      $("#limpiarPantallaProveedores").on("click", function () {
+        $(".per-container").hide();
+        $(this).hide();
+      });
+    });
+  
+  </script>
+
+</body>
+</html>

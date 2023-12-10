@@ -1,0 +1,113 @@
+<style>
+    /* Estilos para el formulario de añadir proveedor */
+    .proveedor-form-container {
+      margin-top: 20px;
+    }
+  
+    .proveedor-form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+  
+    .proveedor-form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+  
+    .proveedor-form button {
+      background-color: rgb(18, 18, 122);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+    .proveedor-form button:hover {
+      background-color: rgb(18, 18, 122);
+    }
+  
+    /* Estilos para la tabla de proveedores */
+    .proveedor-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+  
+    .proveedor-table th,
+    .proveedor-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    .proveedor-table th {
+      background-color: rgb(18, 18, 122);
+      color: white;
+    }
+  
+    /* Estilos para la sección de mensajes de éxito */
+    .success-message {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #dff0d8;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+      border-radius: 5px;
+    }
+  
+    /* Estilos para el botón con el ID 'add-proveedor-btn' */
+    #add-proveedor-btn {
+      background-color: #4caf50; /* Color de fondo */
+      color: white; /* Color del texto */
+      padding: 10px 20px; /* Espaciado interno */
+      font-size: 16px; /* Tamaño de fuente */
+      border: none; /* Sin borde */
+      border-radius: 5px; /* Bordes redondeados */
+      cursor: pointer; /* Cursor de puntero */
+    }
+  
+    #add-proveedor-btn:hover {
+      background-color: #45a049; /* Cambio de color al pasar el mouse */
+    }
+  
+    /* Estilos para los botones con la clase 'delete-proveedor-btn' */
+    .delete-proveedor-btn {
+      background-color: #f44336; /* Color de fondo */
+      color: white; /* Color del texto */
+      padding: 8px 16px; /* Espaciado interno */
+      font-size: 14px; /* Tamaño de fuente */
+      border: none; /* Sin borde */
+      border-radius: 3px; /* Bordes redondeados */
+      cursor: pointer; /* Cursor de puntero */
+    }
+  
+    .delete-proveedor-btn:hover {
+      background-color: #d32f2f; /* Cambio de color al pasar el mouse */
+    }
+  </style>
+
+<h2>Listado de Proveedores</h2>
+
+<div class="col-md-12">
+    <table class="proveedor-table">
+      <thead>
+        <tr>
+          <th>Proveedor</th>
+          <th>Nombre</th>
+          <th>Correo Electrónico</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for proveedor in proveedores %}
+        <tr>
+          <td>{{ proveedor.pro_id }}</td>
+          <td>{{ proveedor.pro_nom }}</td>
+          <td>{{ proveedor.pro_mail }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>

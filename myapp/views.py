@@ -89,7 +89,6 @@ def crear_cuenta(request):
 def cli_home(request):
     return render(request, 'cliente/cli_home.html')
 
-
 def cli_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'cliente/cli_servicios.html', {'servicios': servicios})
@@ -181,6 +180,10 @@ def cli_atencion(request):
 
 def per_home(request):
     return render(request, 'personal/per_home.html')
+
+def per_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render(request, 'personal/per_proveedores.html', {'proveedores': proveedores})
 
 def adm_home(request):
     return render(request, 'admin/adm_home.html')
@@ -481,9 +484,6 @@ def adm_inv(request):
     inventario = Inventario.objects.all()
     return render(request, 'admin/adm_inv.html', {'inventario': inventario})
 
-from django.http import JsonResponse
-from django.db.models import Q
-
 def filtered_inventario(request):
     filter_value = request.GET.get('search', '')
     marca_filter = request.GET.get('marca_filter', '')
@@ -538,7 +538,6 @@ def generate_pdf_inventario(request):
         return response
 
     return HttpResponse("Error al generar el PDF", status=400)
-
 
 
 """_____________________ Carrito _____________________"""
