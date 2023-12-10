@@ -2,6 +2,38 @@
 
 {% load static %}
 
+<style>
+  #openManual {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: #fff;
+      border: 1px solid #4CAF50;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  #openManual:hover {
+      background-color: #45a049;
+  }
+
+  #openManual i {
+      margin-right: 8px;
+      font-size: 18px;
+  }
+  #Manualspan{
+    font-family: Arial, Helvetica, sans-serif;
+    
+  }
+
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,11 +43,15 @@
     <!-- .css -->
     <link rel="stylesheet" href="{% static 'styles/nav.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/carousel.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/formulario.css' %}" />
+
     <link rel="stylesheet" href="{% static 'styles/cli_home.css' %}" />
 
     <link rel="stylesheet" href="{% static 'styles/cli_vehiculo.css' %}" />
 
     <link rel="stylesheet" href="{% static 'styles/cli_atencion.css' %}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 
   </head>
 
@@ -31,11 +67,11 @@
 
           <div class="nav-items">
             <ul>
-              <li><a href="#" id="atencion-link">Atenciones</a></li>
-              <li><a href="#" id="servicios-link">Servicios</a></li>
-              <li><a href="#" id="vehiculo-link">Mi Vehiculo</a></li>
-              <li><a href="#" id="carrito-link">Carrito</a></li>
-              <li><a href="/">Cerrar sesion</a></li>
+              <li><a href="#" id="atencion-link"><i class="fas fa-list-alt"></i> Atenciones</a></li>
+              <li><a href="#" id="servicios-link"><i class="fas fa-cogs"></i> Servicios</a></li>
+              <li><a href="#" id="vehiculo-link"><i class="fas fa-car"></i> Mi Vehiculo</a></li>
+              <li><a href="#" id="carrito-link"><i class="fas fa-shopping-cart"></i> Mi Carrito</a></li>
+              <li><a href="/"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
             </ul>
           </div>
         </div>
@@ -44,8 +80,72 @@
 
     <div class="content" style="margin-top: 100px">
       <!-- Contenido adicional de tu página de inicio -->
+      
+      <button id="openManual">
+        <i class="fas fa-question-circle"></i> Manual en linea
+      </button><span id="Manualspan"> ¿Necesitas ayuda para navegar?, consulta nuestro manual en linea.</span>
 
       <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
+
+      <div id="container-current_user" class="dynamic-content-container" style="margin-top: 20px; margin-left: 10px;">
+        <h2> Bienvenido a ServiExpress, las mejores atenciones solo para usted, {{user_profile.user_name}}.</h2>
+        <br>
+
+        <div class="carousel-container" id="carousel-container">
+          <div class="carousel" id="carousel">
+            <div class="carousel-item" style="background-color: #3498db">
+              <!-- Primer Slide: Imagen -->
+              <img src="{% static 'slides/1.png' %}" alt="Imagen 1" />
+            </div>
+            <div class="carousel-item" style="background-color: #e74c3c">
+              <!-- Tercer Slide: Imagen -->
+              <img src="{% static 'slides/2.png' %}" alt="Imagen 2" />
+            </div>
+            <div class="carousel-item" style="background-color: #f39c12">
+              <!-- Cuarto Slide: Imagen -->
+              <img src="{% static 'slides/3.png' %}" alt="Imagen 3" />
+            </div>
+          </div>
+  
+          <button
+            class="carousel-button carousel-button-prev"
+            onclick="prevSlide()"
+          >
+            ❮
+          </button>
+          <button
+            class="carousel-button carousel-button-next"
+            onclick="nextSlide()"
+          >
+            ❯
+          </button>
+  
+          <div class="carousel-indicators">
+            <div class="indicator" onclick="goToSlide(0)"></div>
+            <div class="indicator" onclick="goToSlide(1)"></div>
+            <div class="indicator" onclick="goToSlide(2)"></div>
+          </div>
+        </div>
+  
+        <div class="contact-form-container" id="contact-form-container">
+          <h2>Contacto</h2>
+          <form id="contact-form" action="#" method="post">
+            {% csrf_token %}
+  
+            <label for="name">Nombre:</label>
+            <input type="text" id="fname" name="fname" required />
+  
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="femail" name="femail" required />
+  
+            <label for="message">Mensaje:</label>
+            <textarea id="message" name="message" required></textarea>
+  
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+
+      </div>
 
       <div id="container-cli_atencion" class="dynamic-content-container">
         <!-- Aquí se cargará el contenido dinámico -->
@@ -58,7 +158,6 @@
       <div id="container-cli_vehiculo" class="dynamic-content-container">
         <!-- Aquí se cargará el contenido dinámico -->
       </div>
-
 
        <!-- Modal Carrito -->
        <div class="container-xl" id="modal-container">
@@ -132,6 +231,17 @@
     <!-- scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{% static 'js/carousel.js' %}"></script>
+    <script src="{% static 'js/contacto.js' %}"></script>
+
+<!-- Manual -->
+    <script>
+      function openPdf() {
+          var pdfPath = "{% static 'manuales/V.CL13NT3.pdf' %}";
+          window.open(pdfPath, '_blank');
+      }
+      document.getElementById('openManual').addEventListener('click', openPdf);
+  </script>
 
   <!-- atenciones -->
 
@@ -153,6 +263,7 @@
             $("#limpiarPantallaServicios").hide(); 
             $("#container-cli_vehiculo").html(''); 
             $("#limpiarPantallaVehiculo").hide();
+            $("#container-current_user").html(''); 
 
           },
           error: function () {
@@ -189,7 +300,7 @@
             $("#limpiarPantallaAtencion").hide(); 
             $("#container-cli_vehiculo").html(''); 
             $("#limpiarPantallaVehiculo").hide();
-
+            $("#container-current_user").html(''); 
           },
           error: function () {
             alert("Error al cargar el contenido de Servicios");
@@ -224,7 +335,7 @@
           $("#limpiarPantallaAtencion").hide(); 
           $("#container-cli_servicios").html(''); 
           $("#limpiarPantallaServicios").hide();
-
+          $("#container-current_user").html(''); 
 
         },
         error: function () {

@@ -87,7 +87,14 @@ def crear_cuenta(request):
     return render(request, 'crear_cuenta.html')
     
 def cli_home(request):
-    return render(request, 'cliente/cli_home.html')
+    try:
+        user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
+        print("User ID from session:", request.session.get('user_id'))
+        print("User Profile for current user:", user_profile)
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'error': 'UserProfile no encontrado'})
+    
+    return render(request, 'cliente/cli_home.html', {'user_profile': user_profile} )
 
 def cli_servicios(request):
     servicios = Servicio.objects.all()
@@ -179,14 +186,27 @@ def cli_atencion(request):
     return render(request, 'cliente/cli_atencion.html', {'atencion': atencion})
 
 def per_home(request):
-    return render(request, 'personal/per_home.html')
+    try:
+        user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
+        print("User ID from session:", request.session.get('user_id'))
+        print("User Profile for current user:", user_profile)
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'error': 'UserProfile no encontrado'})    
+    return render(request, 'personal/per_home.html', {'user_profile': user_profile})
 
 def per_proveedores(request):
     proveedores = Proveedor.objects.all()
     return render(request, 'personal/per_proveedores.html', {'proveedores': proveedores})
 
 def adm_home(request):
-    return render(request, 'admin/adm_home.html')
+    try:
+        user_profile = UserProfile.objects.get(user_id=request.session['user_id'])
+        print("User ID from session:", request.session.get('user_id'))
+        print("User Profile for current user:", user_profile)
+    except UserProfile.DoesNotExist:
+        return JsonResponse({'error': 'UserProfile no encontrado'})
+        
+    return render(request, 'admin/adm_home.html', {'user_profile': user_profile})
 
 def adm_users(request):
     users = UserProfile.objects.all()
