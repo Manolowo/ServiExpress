@@ -23,7 +23,8 @@ from myapp.carrito import Carrito
 
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-
+from django.utils import timezone
+from datetime import datetime
 
 def index(request):
     return render(request, 'index.html')
@@ -191,8 +192,10 @@ def per_home(request):
         print("User ID from session:", request.session.get('user_id'))
         print("User Profile for current user:", user_profile)
     except UserProfile.DoesNotExist:
-        return JsonResponse({'error': 'UserProfile no encontrado'})    
-    return render(request, 'personal/per_home.html', {'user_profile': user_profile})
+        return JsonResponse({'error': 'UserProfile no encontrado'})
+    current_date = datetime.now().date()
+    atenciones_del_dia = Atencion.objects.filter(ate_date__date=current_date)
+    return render(request, 'personal/per_home.html', { 'user_profile': user_profile, 'atenciones_del_dia': atenciones_del_dia })
 
 def per_proveedores(request):
     proveedores = Proveedor.objects.all()
@@ -205,8 +208,11 @@ def adm_home(request):
         print("User Profile for current user:", user_profile)
     except UserProfile.DoesNotExist:
         return JsonResponse({'error': 'UserProfile no encontrado'})
-        
-    return render(request, 'admin/adm_home.html', {'user_profile': user_profile})
+    
+    current_date = datetime.now().date()
+    atenciones_del_dia = Atencion.objects.filter(ate_date__date=current_date)
+    
+    return render(request, 'admin/adm_home.html', {'user_profile': user_profile, 'atenciones_del_dia': atenciones_del_dia})
 
 def adm_users(request):
     users = UserProfile.objects.all()

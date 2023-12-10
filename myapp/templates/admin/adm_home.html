@@ -4,34 +4,41 @@
 
 <style>
   #openManual {
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      text-decoration: none;
-      background-color: #4CAF50;
-      color: #fff;
-      border: 1px solid #4CAF50;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: #fff;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
 
   #openManual:hover {
-      background-color: #45a049;
+    background-color: #45a049;
   }
 
   #openManual i {
-      margin-right: 8px;
-      font-size: 18px;
-  }
-  #Manualspan{
-    font-family: Arial, Helvetica, sans-serif;
-    
+    margin-right: 8px;
+    font-size: 18px;
   }
 
+  #Manualspan {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    font-family: Arial, Helvetica, sans-serif;
+  }
 </style>
 
 <!DOCTYPE html>
@@ -96,7 +103,37 @@
     <div id="container-current_user" class="dynamic-content-container" style="margin-top: 20px; margin-left: 10px;">
       <h3> Bienvenido a ServiExpress, señor {{user_profile.user_name}}.</h3>
       <br>
-
+      <div class="col-md-12">
+        <h4>Atenciones del día de hoy</h4>
+        {% if atenciones_del_dia %}
+            <table class="atencion-table">
+                <thead>
+                    <tr>
+                        <th class="table-header">Id</th>
+                        <th class="table-header">Cliente</th>
+                        <th class="table-header">Lista de Atenciones</th>
+                        <th class="table-header">Fecha de Atencion</th>
+                        <th class="table-header">Total de la Atencion</th>
+                        <th class="table-header">Estado de la Atencion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atencion in atenciones_del_dia %}
+                        <tr>
+                            <td>{{ atencion.ate_id }}</td>
+                            <td>{{ atencion.userProfile.user_name }} {{ atencion.userProfile.user_lastname }}</td>
+                            <td>{{ atencion.ate_list }}</td>
+                            <td>{{ atencion.ate_date }}</td>
+                            <td>{{ atencion.ate_prec }}</td>
+                            <td>{{ atencion.ate_est }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay atenciones para el día de hoy.</p>
+        {% endif %}
+    </div>
     </div>
 
     <div id="container-adm_atenciones" class="dynamic-content-container" style="margin-top: 20px; margin-left: 10px;" >

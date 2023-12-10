@@ -4,34 +4,41 @@
 
 <style>
   #openManual {
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      text-decoration: none;
-      background-color: #4CAF50;
-      color: #fff;
-      border: 1px solid #4CAF50;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: #fff;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
 
   #openManual:hover {
-      background-color: #45a049;
+    background-color: #45a049;
   }
 
   #openManual i {
-      margin-right: 8px;
-      font-size: 18px;
-  }
-  #Manualspan{
-    font-family: Arial, Helvetica, sans-serif;
-    
+    margin-right: 8px;
+    font-size: 18px;
   }
 
+  #Manualspan {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    font-family: Arial, Helvetica, sans-serif;
+  }
 </style>
 
 <!DOCTYPE html>
@@ -81,10 +88,6 @@
     <div class="content" style="margin-top: 100px">
       <!-- Contenido adicional de tu página de inicio -->
       
-      <button id="openManual">
-        <i class="fas fa-question-circle"></i> Manual en linea
-      </button><span id="Manualspan"> ¿Necesitas ayuda para navegar?, consulta nuestro manual en linea.</span>
-
       <button id="limpiarPantalla" style="display: none;">Limpiar Pantalla</button>
 
       <div id="container-current_user" class="dynamic-content-container" style="margin-top: 20px; margin-left: 10px;">
@@ -158,6 +161,11 @@
       <div id="container-cli_vehiculo" class="dynamic-content-container">
         <!-- Aquí se cargará el contenido dinámico -->
       </div>
+
+      <button id="openManual">
+        <i class="fas fa-question-circle"></i> Manual en linea
+      </button><span id="Manualspan"> ¿Necesitas ayuda para navegar?, consulta nuestro manual en linea.</span>
+
 
        <!-- Modal Carrito -->
        <div class="container-xl" id="modal-container">
