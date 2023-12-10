@@ -1,5 +1,71 @@
 <h2>Administración de Inventario</h2>
 
+<style>
+
+  /* Estilos para el formulario de filtrado de inventario */
+#inventario-filter-form {
+    padding-left: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  #inventario-filter-form input {
+    padding: 8px;
+    width: 200px;
+  }
+  
+  #inventario-filter-form button {
+    padding: 8px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+  }
+  
+  #inventario-filter-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  /* Estilos para la tabla de inventario */
+  .inventario-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  .inventario-table th{
+    background-color: rgb(18, 18, 122);
+    color: #ddd;
+  }
+  
+  .inventario-table th, .inventario-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Estilos específicos para cada columna */
+  .repuesto-nombre {
+    width: 30%;
+  }
+  
+  .repuesto-marca, .repuesto-anno {
+    width: 20%;
+  }
+  
+  .cantidad-total {
+    width: 15%;
+  }
+  
+  /* Estilos para resaltar las filas al pasar el ratón */
+  .inventario-table tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+</style>
+
 <form id="inventario-filter-form">
   <input
     type="text"
@@ -23,6 +89,7 @@
   <button type="button" onclick="generatePDF()">Generar PDF</button> 
 </form>
 
+<div class="col-md-12">
 <table class="inventario-table">
   <thead>
       <tr>
@@ -43,6 +110,7 @@
       {% endfor %}
   </tbody>
 </table>
+</div>
 
 
 

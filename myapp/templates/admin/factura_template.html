@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Atencion</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .factura-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        h2{
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 30px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        th, td {
+            border: 1px solid rgb(18, 18, 122);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgb(18, 18, 122);
+            color: #fff;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="factura-container">
+        <h2>Factura de Atencion</h2>
+        <h1>ServiExpress</h1>
+
+        <p><strong>Atencion ID:</strong> {{ atencion.ate_id }}</p>
+        <p><strong>Cliente:</strong> {{ atencion.userProfile.user_name }} {{ atencion.userProfile.user_lastname }}</p>
+        <p><strong>Fecha de Atencion:</strong> {{ atencion.ate_date }}</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Atenciones Realizadas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ atencion.ate_list }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="total"><strong>Total a Pagar:</strong> {{ atencion.ate_prec }}</p>
+
+        <div class="contact-info">
+            <p><strong>Correo Electronico:</strong> serviexpress@empresa.cl</p>
+            <p><strong>Numero de Telefono:</strong> +56 9 54231244</p>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <h2>Atenciones Inscritas</h2>
 
 {% if atenciones %}
+<div class="col-md-12">
   <table class="atencion-table">
     <thead>
       <tr>
@@ -24,13 +25,25 @@
           <td>{{ atencion.ate_est }}</td>
 
           <td>
-           
-          </td>
+            <button class="facturar-btn" data-atencion-id="{{ atencion.ate_id }}">Facturar</button>
+        </td>
         
         </tr>
       {% endfor %}
     </tbody>
   </table>
+</div>
+
 {% else %}
   <p class="no-atencion">No hay Atenciones inscritas.</p>
 {% endif %}
+
+<script>
+  document.querySelectorAll('.facturar-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+          const ate_id = this.getAttribute('data-atencion-id');
+          window.open(`/facturar_atencion/${ate_id}/`, '_blank');  // Cambia aquí
+      });
+  });
+</script>
+

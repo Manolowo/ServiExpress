@@ -243,6 +243,28 @@ def adm_atenciones(request):
     atenciones = Atencion.objects.all()
     return render(request, 'admin/adm_atenciones.html', {'users': users , 'atenciones': atenciones})
 
+def facturar_atencion(request, ate_id):
+    # Obtén la atención específica o devuelve un 404 si no existe
+    atencion = get_object_or_404(Atencion, ate_id=ate_id)
+
+    # Pasa la atención al contexto de la plantilla
+    atencion_data = {'atencion': atencion}
+
+    # Utiliza la plantilla específica para la factura
+    template_path = 'admin/factura_template.html'
+    
+    # Usa render_to_pdf para generar el PDF
+    pdf = render_to_pdf(template_path, atencion_data)
+
+    if pdf:
+        # Devuelve el PDF como una respuesta HTTP
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"factura_atencion_{atencion.ate_id}.pdf"
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
+
+    return HttpResponse("Error al generar el PDF", status=400)
+
 def adm_servicios(request):
     servicios = Servicio.objects.all()
     return render(request, 'admin/adm_servicios.html', {'servicios': servicios})

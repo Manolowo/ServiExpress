@@ -21,6 +21,7 @@ urlpatterns=[
     
     path('adm_home/', views.adm_home, name='adm_home'),
     path('adm_atenciones/', views.adm_atenciones, name='adm_atenciones'),
+    path('facturar_atencion/<int:ate_id>/', views.facturar_atencion, name='facturar_atencion'),
 
     path('adm_servicios/', views.adm_servicios, name='adm_servicios'),
     path('add_service/', views.add_service, name='add_service'),

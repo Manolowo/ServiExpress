@@ -24,6 +24,7 @@
 </div>
 
 {% if vehiculos %}
+<div class="col-md-12">
   <table class="vehicle-table">
     <thead>
       <tr>
@@ -52,6 +53,7 @@
       {% endfor %}
     </tbody>
   </table>
+</div>
 {% else %}
   <p class="no-vehicles">No hay vehículos inscritos.</p>
 {% endif %}
