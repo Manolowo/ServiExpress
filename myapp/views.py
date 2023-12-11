@@ -566,6 +566,7 @@ def generate_pdf_inventario(request):
     return HttpResponse("Error al generar el PDF", status=400)
 
 
+
 """_____________________ Carrito _____________________"""
 
 def agregarServicio(request, ser_id):
